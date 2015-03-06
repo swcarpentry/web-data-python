@@ -97,7 +97,7 @@ if response.status_code != 200:
     print 'Failed to get data:', response.status_code
 else:
     print 'First 100 characters of data are'
-    print response.text[:100]
+    print response.text[:100]</pre>
 ~~~
 ~~~ {.output}
 First 100 characters of data are
@@ -113,7 +113,8 @@ The second defines the URL for the data we want;
 we could just pass this URL as an argument to the `requests.get` call on the third line,
 but assigning it to a variable makes it easier to find.
 
-`requests.get` actually gets our data. More specifically, it:
+`requests.
+et` actually gets our data. More specifically, it:
 
 *   creates a connection to the `climatedataapi.worldbank.org` server;
 *   sends it the URL `/climateweb/rest/v1/country/cru/tas/year/CAN.csv`;
