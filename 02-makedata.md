@@ -146,7 +146,7 @@ Let's test it.
 If our index file contains:
 
 ~~~
-<pre>2014-05-26,FRA,TCD,FRA-TCD.csv
+2014-05-26,FRA,TCD,FRA-TCD.csv
 2014-05-27,AUS,BRA,AUS-BRA.csv
 2014-05-27,AUS,CAN,AUS-CAN.csv
 2014-05-28,BRA,CAN,BRA-CAN.csv
