@@ -176,7 +176,7 @@ for line in as_lines:
     fields = line.split(',') # turn '1901,12.3' into ['1901', '12.3']
     year = int(fields[0])    # turn the text '1901' into the integer 1901
     value = float(fields[1]) # turn the text '12.3' into the number 12.3
-    print year, ':', value
+    print year, ':', value</pre>
 ~~~
 ~~~ {.output}
 input data as lines:
