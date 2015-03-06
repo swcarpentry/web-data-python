@@ -48,7 +48,7 @@
     <span class="co">&#39;&#39;&#39;Save a list of [year, temp] pairs as CSV.&#39;&#39;&#39;</span>
     <span class="kw">with</span> <span class="dt">open</span>(filename, <span class="st">&#39;w&#39;</span>) <span class="ch">as</span> raw:
         writer = csv.writer(raw)
-        writer.writerows(records)</code></pre>
+        writer.writerows(records)&lt;/pre&gt;</code></pre>
 <p>Let's test it:</p>
 <pre class="sourceCode python"><code class="sourceCode python">save_records(<span class="st">&#39;temp.csv&#39;</span>, [[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]])</code></pre>
 <p>If we then look in the file <code>temp.csv</code>, we find:</p>
@@ -101,7 +101,7 @@
         writer = csv.writer(raw)
         writer.writerows(records)</code></pre>
 <p>Let's test it. If our index file contains:</p>
-<pre><code>2014-05-26,FRA,TCD,FRA-TCD.csv
+<pre><code>&lt;pre&gt;2014-05-26,FRA,TCD,FRA-TCD.csv
 2014-05-27,AUS,BRA,AUS-BRA.csv
 2014-05-27,AUS,CAN,AUS-CAN.csv
 2014-05-28,BRA,CAN,BRA-CAN.csv</code></pre>
@@ -120,7 +120,7 @@
         reader = csv.reader(raw)
         filenames = []
         <span class="kw">for</span> record in reader:
-            <span class="kw">if</span> (after &lt;= record[<span class="dv">0</span>]) and (record[<span class="dv">1</span>] == country or record[<span class="dv">2</span>] == country):
+            <span class="kw">if</span> (record[<span class="dv">0</span>] &lt;= after) and (record[<span class="dv">1</span>] == country or record[<span class="dv">2</span>] == country):
                 filenames.append(record[<span class="dv">3</span>])
     <span class="kw">return</span> filenames
 
