@@ -181,7 +181,7 @@ def what_is_available(index_file, country, after):
         reader = csv.reader(raw)
         filenames = []
         for record in reader:
-            if (record[0] <= after) and (record[1] == country or record[2] == country):
+            if (after <= record[0]) and (record[1] == country or record[2] == country):
                 filenames.append(record[3])
     return filenames
 
