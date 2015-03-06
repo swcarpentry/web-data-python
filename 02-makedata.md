@@ -16,7 +16,7 @@ To do this, we have to answer three questions:
 
 *   How are we going to store the data?
 *   How are people going to download it?
-*   How are people going to <em>find</em> it?
+*   How are people going to find it?
 
 The first question is the easiest to answer:
 `diff_records` returns a list of (year, difference) pairs that we can write out as a CSV file:
@@ -28,7 +28,7 @@ def save_records(filename, records):
     '''Save a list of [year, temp] pairs as CSV.'''
     with open(filename, 'w') as raw:
         writer = csv.writer(raw)
-        writer.writerows(records)</pre>
+        writer.writerows(records)
 ~~~
 
 Let's test it:
@@ -146,7 +146,7 @@ Let's test it.
 If our index file contains:
 
 ~~~
-<pre>2014-05-26,FRA,TCD,FRA-TCD.csv
+2014-05-26,FRA,TCD,FRA-TCD.csv
 2014-05-27,AUS,BRA,AUS-BRA.csv
 2014-05-27,AUS,CAN,AUS-CAN.csv
 2014-05-28,BRA,CAN,BRA-CAN.csv
