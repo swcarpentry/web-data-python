@@ -28,7 +28,7 @@ def save_records(filename, records):
     '''Save a list of [year, temp] pairs as CSV.'''
     with open(filename, 'w') as raw:
         writer = csv.writer(raw)
-        writer.writerows(records)</pre>
+        writer.writerows(records)
 ~~~
 
 Let's test it:
