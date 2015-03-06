@@ -82,7 +82,7 @@ response = requests.get(url)
     <span class="dt">print</span> <span class="st">&#39;Failed to get data:&#39;</span>, response.status_code
 <span class="kw">else</span>:
     <span class="dt">print</span> <span class="st">&#39;First 100 characters of data are&#39;</span>
-    <span class="dt">print</span> response.text[:<span class="dv">100</span>]&lt;/pre&gt;</code></pre>
+    <span class="dt">print</span> response.text[:<span class="dv">100</span>]</code></pre>
 <pre class="output"><code>First 100 characters of data are
 year,data
 1901,-7.67241907119751
@@ -174,7 +174,7 @@ as_lines = input_data.split(<span class="st">&#39;</span><span class="ch">\n</sp
     fields = line.split(<span class="st">&#39;,&#39;</span>) <span class="co"># turn &#39;1901,12.3&#39; into [&#39;1901&#39;, &#39;12.3&#39;]</span>
     year = <span class="dt">int</span>(fields[<span class="dv">0</span>])    <span class="co"># turn the text &#39;1901&#39; into the integer 1901</span>
     value = <span class="dt">float</span>(fields[<span class="dv">1</span>]) <span class="co"># turn the text &#39;12.3&#39; into the number 12.3</span>
-    <span class="dt">print</span> year, <span class="st">&#39;:&#39;</span>, value&lt;/pre&gt;</code></pre>
+    <span class="dt">print</span> year, <span class="st">&#39;:&#39;</span>, value</code></pre>
 <pre class="output"><code>input data as lines:
 [&#39;1901,12.3&#39;, &#39;1902,45.6&#39;, &#39;1903,78.9&#39;]
 1901 : 12.3
@@ -214,7 +214,7 @@ data = <span class="st">&#39;&#39;&#39;first,FIRST</span>
 reader = cStringIO.StringIO(data)
 wrapper = csv.reader(reader)
 <span class="kw">for</span> record in wrapper:
-    <span class="dt">print</span> record&lt;/pre&gt;</code></pre>
+    <span class="dt">print</span> record</code></pre>
 <pre class="output"><code>[&#39;first&#39;, &#39;FIRST&#39;]
 [&#39;second&#39;, &#39;SECOND&#39;]
 [&#39;third&#39;, &#39;THIRD&#39;]</code></pre>
@@ -229,7 +229,7 @@ response = requests.get(url)
     <span class="kw">for</span> record in wrapper:
         year = <span class="dt">int</span>(record[<span class="dv">0</span>])
         value = <span class="dt">float</span>(record[<span class="dv">1</span>])
-        <span class="dt">print</span> year, <span class="st">&#39;:&#39;</span>, value&lt;/pre&gt;</code></pre>
+        <span class="dt">print</span> year, <span class="st">&#39;:&#39;</span>, value</code></pre>
 <pre class="error"><code>---------------------------------------------------------------------------
 ValueError                                Traceback (most recent call last)
 &lt;ipython-input-6-da21db395042&gt; in &lt;module&gt;()
@@ -239,7 +239,7 @@ ValueError                                Traceback (most recent call last)
      10         value = float(record[1])
      11         print year, &#39;:&#39;, value
 
-ValueError: invalid literal for int() with base 10: &#39;year&#39;&lt;/pre&gt;</code></pre>
+ValueError: invalid literal for int() with base 10: &#39;year&#39;</code></pre>
 <p>That error occurs because the first line of data is:</p>
 <pre><code>year,data</code></pre>
 <p>When we try to convert the string <code>'year'</code> to an integer, Python quite rightly complains. The fix is straightforward: we just need to ignore lines that start with the word <code>year</code>. And while we're at it, we'll put our results into a list instead of just printing them:</p>
@@ -257,7 +257,7 @@ response = requests.get(url)
             value = <span class="dt">float</span>(record[<span class="dv">1</span>])
             results.append([year, value])
     <span class="dt">print</span> <span class="st">&#39;first five results&#39;</span>
-    <span class="dt">print</span> results[:<span class="dv">5</span>]&lt;/pre&gt;</code></pre>
+    <span class="dt">print</span> results[:<span class="dv">5</span>]</code></pre>
 <pre class="output"><code>first five results
 [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879], [1904, -8.155729293823242], [1905, -7.547311305999756]]</code></pre>
 <p>Now that we know how to get the data for Canada, let's create a function that will do the same thing for an arbitrary country. The steps are simple: copy the code we've written into a function that takes a 3-letter country code as a parameter, and insert that country code into the URL at the appropriate place:</p>
@@ -276,14 +276,14 @@ response = requests.get(url)
                 year = <span class="dt">int</span>(record[<span class="dv">0</span>])
                 value = <span class="dt">float</span>(record[<span class="dv">1</span>])
                 results.append([year, value])
-        <span class="kw">return</span> results&lt;/pre&gt;</code></pre>
+        <span class="kw">return</span> results</code></pre>
 <p>This works:</p>
 <pre class="sourceCode python"><code class="sourceCode python">canada = get_annual_mean_temp_by_country(<span class="st">&#39;CAN&#39;</span>)
-<span class="dt">print</span> <span class="st">&#39;first five entries for Canada:&#39;</span>, canada[:<span class="dv">5</span>]&lt;/pre&gt;</code></pre>
+<span class="dt">print</span> <span class="st">&#39;first five entries for Canada:&#39;</span>, canada[:<span class="dv">5</span>]</code></pre>
 <pre class="output"><code>first five entries for Canada: [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879], [1904, -8.155729293823242], [1905, -7.547311305999756]]</code></pre>
 <p>but there's a problem. Look what happens when we pass in an invalid country identifier:</p>
 <pre class="sourceCode python"><code class="sourceCode python">latveria = get_annual_mean_temp_by_country(<span class="st">&#39;LTV&#39;</span>)
-<span class="dt">print</span> <span class="st">&#39;first five entries for Latveria:&#39;</span>, latveria[:<span class="dv">5</span>]&lt;/pre&gt;</code></pre>
+<span class="dt">print</span> <span class="st">&#39;first five entries for Latveria:&#39;</span>, latveria[:<span class="dv">5</span>]</code></pre>
 <pre class="output"><code>first five entries for Latveria: []</code></pre>
 <p>Latveria doesn't exist, so why is our function returning an empty list rather than printing an error message? The non-appearance of an error message must mean that the response code was 200; if so, we would have gone into the <code>else</code> branch, assigned an empty list to <code>results</code>, and then... hm... All right, if the response code was 200 and there was no data, that would explain what we're seeing. Let's check:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_annual_mean_temp_by_country(country):
@@ -307,7 +307,7 @@ response = requests.get(url)
         <span class="kw">return</span> results
 
 latveria = get_annual_mean_temp_by_country(<span class="st">&#39;LTV&#39;</span>)
-<span class="dt">print</span> <span class="st">&#39;number of records for Latveria:&#39;</span>, <span class="dt">len</span>(latveria)&lt;/pre&gt;</code></pre>
+<span class="dt">print</span> <span class="st">&#39;number of records for Latveria:&#39;</span>, <span class="dt">len</span>(latveria)</code></pre>
 <pre class="output"><code>url used is http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/LTV.csv
 response code: 200
 length of data: 0
@@ -332,7 +332,7 @@ number of records for Latveria: 0</code></pre>
     <span class="kw">return</span> results
 
 <span class="dt">print</span> <span class="st">&#39;number of records for Canada:&#39;</span>, <span class="dt">len</span>(get_annual_mean_temp_by_country(<span class="st">&#39;CAN&#39;</span>))
-<span class="dt">print</span> <span class="st">&#39;number of records for Latveria:&#39;</span>, <span class="dt">len</span>(get_annual_mean_temp_by_country(<span class="st">&#39;LTV&#39;</span>))&lt;/pre&gt;</code></pre>
+<span class="dt">print</span> <span class="st">&#39;number of records for Latveria:&#39;</span>, <span class="dt">len</span>(get_annual_mean_temp_by_country(<span class="st">&#39;LTV&#39;</span>))</code></pre>
 <pre class="output"><code>number of records for Canada: 109
 number of records for Latveria: 0</code></pre>
 <p>Now that we can get surface temperatures for different countries, we can write a function to compare those values. (We'll jump straight into writing a function because by now it's clear that's what we're eventually going to do anyway.) Here's our first cut:</p>
@@ -345,7 +345,7 @@ number of records for Latveria: 0</code></pre>
         right_year, right_value = right[i]
         difference = left_value - right_value
         results.append([left_year, difference])
-    <span class="kw">return</span> results&lt;/pre&gt;</code></pre>
+    <span class="kw">return</span> results</code></pre>
 <p>Here, we're using the number of entries in <code>left</code> (which we find with <code>len(left)</code>) to control our loop. The expression:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="kw">for</span> i in <span class="dt">range</span>(num_years):</code></pre>
 <p>runs <code>i</code> from 0 to <code>num_years-1</code>, which corresponds exactly to the legal indices of <code>left</code>. Inside the loop we unpack the left and right years and values from the list entries, then append a pair containing a year and a difference to <code>results</code>, which we return at the end.</p>
@@ -353,7 +353,7 @@ number of records for Latveria: 0</code></pre>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="dt">print</span> <span class="st">&#39;one record:&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>]],
                                   [[<span class="dv">1900</span>, <span class="fl">2.0</span>]])
 <span class="dt">print</span> <span class="st">&#39;two records:&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>], [<span class="dv">1901</span>, <span class="fl">10.0</span>]],
-                                   [[<span class="dv">1900</span>, <span class="fl">2.0</span>], [<span class="dv">1901</span>, <span class="fl">20.0</span>]])&lt;/pre&gt;</code></pre>
+                                   [[<span class="dv">1900</span>, <span class="fl">2.0</span>], [<span class="dv">1901</span>, <span class="fl">20.0</span>]])</code></pre>
 <pre class="output"><code>one record: [[1900, -1.0]]
 two records: [[1900, -1.0], [1901, -10.0]]</code></pre>
 <p>That looks pretty good—but what about these cases?</p>
@@ -362,7 +362,7 @@ two records: [[1900, -1.0], [1901, -10.0]]</code></pre>
 <span class="dt">print</span> <span class="st">&#39;left is shorter&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>]],
                                       [[<span class="dv">1900</span>, <span class="fl">10.0</span>], [<span class="dv">1901</span>, <span class="fl">20.0</span>]])
 <span class="dt">print</span> <span class="st">&#39;right is shorter&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>], [<span class="dv">1901</span>, <span class="fl">2.0</span>]],
-                                       [[<span class="dv">1900</span>, <span class="fl">10.0</span>]])&lt;/pre&gt;</code></pre>
+                                       [[<span class="dv">1900</span>, <span class="fl">10.0</span>]])</code></pre>
 <pre class="error"><code>---------------------------------------------------------------------------
 IndexError                                Traceback (most recent call last)
 &lt;ipython-input-15-7582f56db8bf&gt; in &lt;module&gt;()
@@ -398,17 +398,17 @@ right is shorter</code></pre>
                <span class="co">&#39;Record {0} is for different years: {1} vs {2}&#39;</span>.<span class="dt">format</span>(i, left_year, right_year)
         difference = left_value - right_value
         results.append([left_year, difference])
-    <span class="kw">return</span> results&lt;/pre&gt;</code></pre>
+    <span class="kw">return</span> results</code></pre>
 <p>Do our &quot;good&quot; tests pass?</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="dt">print</span> <span class="st">&#39;one record:&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>]],
                                   [[<span class="dv">1900</span>, <span class="fl">2.0</span>]])
 <span class="dt">print</span> <span class="st">&#39;two records:&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>], [<span class="dv">1901</span>, <span class="fl">10.0</span>]],
-                                   [[<span class="dv">1900</span>, <span class="fl">2.0</span>], [<span class="dv">1901</span>, <span class="fl">20.0</span>]])&lt;/pre&gt;</code></pre>
+                                   [[<span class="dv">1900</span>, <span class="fl">2.0</span>], [<span class="dv">1901</span>, <span class="fl">20.0</span>]])</code></pre>
 <pre class="output"><code>one record: [[1900, -1.0]]
 two records: [[1900, -1.0], [1901, -10.0]]</code></pre>
 <p>What about our the three tests that we now expect to fail?</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="dt">print</span> <span class="st">&#39;mis-matched years:&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>]],
-                                         [[<span class="dv">1999</span>, <span class="fl">2.0</span>]])&lt;/pre&gt;</code></pre>
+                                         [[<span class="dv">1999</span>, <span class="fl">2.0</span>]])</code></pre>
 <pre class="error"><code>---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 &lt;ipython-input-18-c101917a748e&gt; in &lt;module&gt;()
@@ -422,9 +422,9 @@ AssertionError                            Traceback (most recent call last)
      13         difference = left_value - right_value
      14         results.append([left_year, difference])
 
-AssertionError: Record 0 is for different years: 1900 vs 1999mis-matched years:&lt;/pre&gt;</code></pre>
+AssertionError: Record 0 is for different years: 1900 vs 1999mis-matched years:</code></pre>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="dt">print</span> <span class="st">&#39;left is shorter&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>]],
-                                      [[<span class="dv">1900</span>, <span class="fl">10.0</span>], [<span class="dv">1901</span>, <span class="fl">20.0</span>]])&lt;/pre&gt;</code></pre>
+                                      [[<span class="dv">1900</span>, <span class="fl">10.0</span>], [<span class="dv">1901</span>, <span class="fl">20.0</span>]])</code></pre>
 <pre class="error"><code>---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 &lt;ipython-input-19-682d448d921e&gt; in &lt;module&gt;()
@@ -438,9 +438,9 @@ AssertionError                            Traceback (most recent call last)
       7     num_years = len(left)
       8     results = []
 
-AssertionError: Inputs have different lengths. left is shorter&lt;/pre&gt;</code></pre>
+AssertionError: Inputs have different lengths. left is shorter</code></pre>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="dt">print</span> <span class="st">&#39;right is shorter&#39;</span>, diff_records([[<span class="dv">1900</span>, <span class="fl">1.0</span>], [<span class="dv">1901</span>, <span class="fl">2.0</span>]],
-                                       [[<span class="dv">1900</span>, <span class="fl">10.0</span>]])&lt;/pre&gt;</code></pre>
+                                       [[<span class="dv">1900</span>, <span class="fl">10.0</span>]])</code></pre>
 <pre class="error"><code>---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 &lt;ipython-input-20-a475e608dd70&gt; in &lt;module&gt;()
@@ -454,7 +454,7 @@ AssertionError                            Traceback (most recent call last)
       7     num_years = len(left)
       8     results = []
 
-AssertionError: Inputs have different lengths. right is shorter&lt;/pre&gt;</code></pre>
+AssertionError: Inputs have different lengths. right is shorter</code></pre>
 <p>Excellent: the assertions we've added will now alert us if we try to work with badly-formatted or inconsistent data.</p>
 <div id="theres-a-better-way-to-do-it" class="callout">
 <h2>There's a Better Way to Do It</h2>
@@ -473,10 +473,10 @@ plt.show()</code></pre>
 </div>
 <p>That's not what we want: the library has interpreted our list of pairs as two corresponding curves rather than as the (x,y) coordinates for one curve. Let's convert our list of (year, difference) pairs into a NumPy array:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> numpy <span class="ch">as</span> np
-d = np.array(diff)&lt;/pre&gt;</code></pre>
+d = np.array(diff)</code></pre>
 <p>and then plot the first column against the second:</p>
 <pre class="sourceCode python"><code class="sourceCode python">plt.plot(d[:, <span class="dv">0</span>], d[:, <span class="dv">1</span>])
-plt.show()&lt;/pre&gt;</code></pre>
+plt.show()</code></pre>
 <div class="figure">
 <img src="fig/plot-02.png" alt="Second Plot" /><p class="caption">Second Plot</p>
 </div>
