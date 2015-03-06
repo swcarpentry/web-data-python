@@ -10,3 +10,31 @@ subtitle: Reference
 *   Use the `cStringIO` library to treat text as input or output files.
 *   Use the `csv` library to read comma-separated values.
 *   Write tests.
+
+## [Publishing Data](02-makedata.html)
+
+*   Publish data by putting files with predictable names in a publicly-accessible location.
+*   Create a machine-readable index to explicitly tell people what data sets are available.
+
+## Glossary
+
+Representation State Transfer (REST):
+:   FIXME
+
+comma-separated values (CSV):
+:   FIXME
+
+status code:
+:   FIXME
+
+escape sequence:
+:   FIXME
+
+silent failure:
+:   FIXME
+
+unit testing:
+:   FIXME
+
+index:
+:   FIXME

@@ -4,7 +4,7 @@ title: Working With Data on the Web
 subtitle: Getting Data
 minutes: 15
 ---
-> ## Learning Objectives
+> ## Learning Objectives {.objectives}
 >
 > *   Write Python programs to download data sets using simple REST APIs.
 > *   Explain what CSV is, and read CSV data sets.
