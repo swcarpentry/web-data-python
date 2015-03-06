@@ -97,7 +97,7 @@ if response.status_code != 200:
     print 'Failed to get data:', response.status_code
 else:
     print 'First 100 characters of data are'
-    print response.text[:100]
+    print response.text[:100]</pre>
 ~~~
 ~~~ {.output}
 First 100 characters of data are
@@ -113,7 +113,8 @@ The second defines the URL for the data we want;
 we could just pass this URL as an argument to the `requests.get` call on the third line,
 but assigning it to a variable makes it easier to find.
 
-`requests.get` actually gets our data. More specifically, it:
+`requests.
+et` actually gets our data. More specifically, it:
 
 *   creates a connection to the `climatedataapi.worldbank.org` server;
 *   sends it the URL `/climateweb/rest/v1/country/cru/tas/year/CAN.csv`;
@@ -176,7 +177,7 @@ for line in as_lines:
     fields = line.split(',') # turn '1901,12.3' into ['1901', '12.3']
     year = int(fields[0])    # turn the text '1901' into the integer 1901
     value = float(fields[1]) # turn the text '12.3' into the number 12.3
-    print year, ':', value
+    print year, ':', value</pre>
 ~~~
 ~~~ {.output}
 input data as lines:
@@ -245,7 +246,7 @@ third,THIRD'''
 reader = cStringIO.StringIO(data)
 wrapper = csv.reader(reader)
 for record in wrapper:
-    print record
+    print record</pre>
 ~~~
 ~~~ {.output}
 ['first', 'FIRST']
@@ -266,7 +267,7 @@ else:
     for record in wrapper:
         year = int(record[0])
         value = float(record[1])
-        print year, ':', value
+        print year, ':', value</pre>
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
@@ -278,7 +279,7 @@ ValueError                                Traceback (most recent call last)
      10         value = float(record[1])
      11         print year, ':', value
 
-ValueError: invalid literal for int() with base 10: 'year'
+ValueError: invalid literal for int() with base 10: 'year'</pre>
 ~~~
 
 That error occurs because the first line of data is:
@@ -309,7 +310,7 @@ else:
             value = float(record[1])
             results.append([year, value])
     print 'first five results'
-    print results[:5]
+    print results[:5]</pre>
 ~~~
 ~~~ {.output}
 first five results
@@ -338,14 +339,14 @@ def get_annual_mean_temp_by_country(country):
                 year = int(record[0])
                 value = float(record[1])
                 results.append([year, value])
-        return results
+        return results</pre>
 ~~~
 
 This works:
 
 ~~~ {.python}
 canada = get_annual_mean_temp_by_country('CAN')
-print 'first five entries for Canada:', canada[:5]
+print 'first five entries for Canada:', canada[:5]</pre>
 ~~~
 ~~~ {.output}
 first five entries for Canada: [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879], [1904, -8.155729293823242], [1905, -7.547311305999756]]
@@ -355,7 +356,7 @@ but there's a problem. Look what happens when we pass in an invalid country iden
 
 ~~~ {.python}
 latveria = get_annual_mean_temp_by_country('LTV')
-print 'first five entries for Latveria:', latveria[:5]
+print 'first five entries for Latveria:', latveria[:5]</pre>
 ~~~
 ~~~ {.output}
 first five entries for Latveria: []
@@ -393,7 +394,7 @@ def get_annual_mean_temp_by_country(country):
         return results
 
 latveria = get_annual_mean_temp_by_country('LTV')
-print 'number of records for Latveria:', len(latveria)
+print 'number of records for Latveria:', len(latveria)</pre>
 ~~~
 ~~~ {.output}
 url used is http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/LTV.csv
@@ -426,7 +427,7 @@ def get_annual_mean_temp_by_country(country):
     return results
 
 print 'number of records for Canada:', len(get_annual_mean_temp_by_country('CAN'))
-print 'number of records for Latveria:', len(get_annual_mean_temp_by_country('LTV'))
+print 'number of records for Latveria:', len(get_annual_mean_temp_by_country('LTV'))</pre>
 ~~~
 ~~~ {.output}
 number of records for Canada: 109
@@ -448,7 +449,7 @@ def diff_records(left, right):
         right_year, right_value = right[i]
         difference = left_value - right_value
         results.append([left_year, difference])
-    return results
+    return results</pre>
 ~~~
 
 Here, we're using the number of entries in `left` (which we find with `len(left)`) to control our loop.
@@ -469,7 +470,7 @@ To see if this function works, we can run a couple of tests on made-up data:
 print 'one record:', diff_records([[1900, 1.0]],
                                   [[1900, 2.0]])
 print 'two records:', diff_records([[1900, 1.0], [1901, 10.0]],
-                                   [[1900, 2.0], [1901, 20.0]])
+                                   [[1900, 2.0], [1901, 20.0]])</pre>
 ~~~
 ~~~ {.output}
 one record: [[1900, -1.0]]
@@ -484,7 +485,7 @@ print 'mis-matched years:', diff_records([[1900, 1.0]],
 print 'left is shorter', diff_records([[1900, 1.0]],
                                       [[1900, 10.0], [1901, 20.0]])
 print 'right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
-                                       [[1900, 10.0]])
+                                       [[1900, 10.0]])</pre>
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
@@ -535,7 +536,7 @@ def diff_records(left, right):
                'Record {0} is for different years: {1} vs {2}'.format(i, left_year, right_year)
         difference = left_value - right_value
         results.append([left_year, difference])
-    return results
+    return results</pre>
 ~~~
 
 Do our "good" tests pass?
@@ -544,7 +545,7 @@ Do our "good" tests pass?
 print 'one record:', diff_records([[1900, 1.0]],
                                   [[1900, 2.0]])
 print 'two records:', diff_records([[1900, 1.0], [1901, 10.0]],
-                                   [[1900, 2.0], [1901, 20.0]])
+                                   [[1900, 2.0], [1901, 20.0]])</pre>
 ~~~
 ~~~ {.output}
 one record: [[1900, -1.0]]
@@ -555,7 +556,7 @@ What about our the three tests that we now expect to fail?
 
 ~~~ {.python}
 print 'mis-matched years:', diff_records([[1900, 1.0]],
-                                         [[1999, 2.0]])
+                                         [[1999, 2.0]])</pre>
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
@@ -571,12 +572,12 @@ AssertionError                            Traceback (most recent call last)
      13         difference = left_value - right_value
      14         results.append([left_year, difference])
 
-AssertionError: Record 0 is for different years: 1900 vs 1999mis-matched years:
+AssertionError: Record 0 is for different years: 1900 vs 1999mis-matched years:</pre>
 ~~~
 
 ~~~ {.python}
 print 'left is shorter', diff_records([[1900, 1.0]],
-                                      [[1900, 10.0], [1901, 20.0]])
+                                      [[1900, 10.0], [1901, 20.0]])</pre>
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
@@ -592,11 +593,11 @@ AssertionError                            Traceback (most recent call last)
       7     num_years = len(left)
       8     results = []
 
-AssertionError: Inputs have different lengths. left is shorter
+AssertionError: Inputs have different lengths. left is shorter</pre>
 ~~~
 ~~~ {.python}
 print 'right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
-                                       [[1900, 10.0]])
+                                       [[1900, 10.0]])</pre>
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
@@ -612,7 +613,7 @@ AssertionError                            Traceback (most recent call last)
       7     num_years = len(left)
       8     results = []
 
-AssertionError: Inputs have different lengths. right is shorter
+AssertionError: Inputs have different lengths. right is shorter</pre>
 ~~~
 
 Excellent: the assertions we've added will now alert us if we try to work with badly-formatted or inconsistent data.
@@ -644,14 +645,14 @@ Let's convert our list of (year, difference) pairs into a NumPy array:
 
 ~~~ {.python}
 import numpy as np
-d = np.array(diff)
+d = np.array(diff)</pre>
 ~~~
 
 and then plot the first column against the second:
 
 ~~~ {.python}
 plt.plot(d[:, 0], d[:, 1])
-plt.show()
+plt.show()</pre>
 ~~~
 
 ![Second Plot](fig/plot-02.png)
