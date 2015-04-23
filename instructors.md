@@ -5,7 +5,5 @@ subtitle: Instructor's Guide
 ---
 ## Legend
 
-FIXME
-
 ## Overall
 

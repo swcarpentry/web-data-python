@@ -12,7 +12,11 @@ and how to create data for others to use.
 ## Topics
 
 1.  [Getting Data](01-getdata.html)
-2.  [Publishing Data](02-makedata.html)
+2.  [Handling CSV Data](02-csv.html)
+3.  [Generalizing and Handling Errors](03-generalize.html)
+4.  [Visualization](04-visualize.html)
+5.  [Publishing Data](05-makedata.html)
+6.  [Making Data Findable](06-findable.html)
 
 ## Other Resources
 
