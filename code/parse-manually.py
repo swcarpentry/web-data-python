@@ -1,4 +1,4 @@
-input_data = '1901,12.3\n1902,45.6\n1903,78.9\n'
+input_data = '1901,12.3\n1902,45.6\n1903,78.9'
 print('input data is:')
 print(input_data)
 
