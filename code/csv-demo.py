@@ -1,8 +1,8 @@
-import cStringIO
+import io
 import csv
 
-data = 'first\nsecond\nthird\n'
-reader = cStringIO.StringIO(data)
+data = u'first\nsecond\nthird\n'
+reader = io.StringIO(data)
 wrapper = csv.reader(reader)
 for record in wrapper:
-    print record
+    print(record)

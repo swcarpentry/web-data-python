@@ -50,14 +50,14 @@
 <span class="st">1903,78.9&#39;&#39;&#39;</span>
 
 as_lines = input_data.split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)
-<span class="dt">print</span> <span class="st">&#39;input data as lines:&#39;</span>
-<span class="dt">print</span> as_lines
+<span class="dt">print</span>(<span class="st">&#39;input data as lines:&#39;</span>)
+<span class="dt">print</span>(as_lines)
 
 <span class="kw">for</span> line in as_lines:
     fields = line.split(<span class="st">&#39;,&#39;</span>) <span class="co"># turn &#39;1901,12.3&#39; into [&#39;1901&#39;, &#39;12.3&#39;]</span>
     year = <span class="dt">int</span>(fields[<span class="dv">0</span>])    <span class="co"># turn the text &#39;1901&#39; into the integer 1901</span>
     value = <span class="dt">float</span>(fields[<span class="dv">1</span>]) <span class="co"># turn the text &#39;12.3&#39; into the number 12.3</span>
-    <span class="dt">print</span> year, <span class="st">&#39;:&#39;</span>, value</code></pre>
+    <span class="dt">print</span>(year, <span class="st">&#39;:&#39;</span>, value)</code></pre>
 <pre class="output"><code>input data as lines:
 [&#39;1901,12.3&#39;, &#39;1902,45.6&#39;, &#39;1903,78.9&#39;]
 1901 : 12.3
@@ -72,55 +72,35 @@ as_lines = input_data.split(<span class="st">&#39;</span><span class="ch">\n</sp
 <p>Programmers need a way to put quotes, double quotes, and other special characters in strings. To do this, they use <a href="reference.html#escape-sequence">escape sequences</a>: <code>\'</code> for a single quote, <code>\&quot;</code> for a double quote, <code>\n</code> for a newline, and so on.</p>
 </div>
 </div>
-<p>Now let’s have a look at how we could parse the data using a couple of standard Python libraries. The first, called <code>cStringIO</code>, lets Python treat a string as if it was an input file:</p>
-<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> cStringIO
-
-data = <span class="st">&#39;&#39;&#39;first</span>
-<span class="st">second</span>
-<span class="st">third&#39;&#39;&#39;</span>
-
-reader = cStringIO.StringIO(data)
-<span class="kw">for</span> line in reader:
-    <span class="dt">print</span> line</code></pre>
-<pre class="output"><code>first
-
-second
-
-third</code></pre>
-<p>The <code>cStringIO.StringIO</code> object that we assign to <code>reader</code> is an object that behaves like a file, but reads characters from a string instead of from something on our hard drive. As we’ll see in the exercises, we can also write to a <code>StringIO</code> object, which is very useful when we’re testing programs.</p>
-<div id="why-the-c" class="callout panel panel-info">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pushpin"></span>Why the ‘c’?</h2>
-</div>
-<div class="panel-body">
-<p>The ‘c’ at the start of <code>cStringIO</code>’s name comes from the fact that it is a rewrite in C of an older and slower library called <code>StringIO</code>.</p>
-</div>
-</div>
-<p>The second library we’ll use is called <code>csv</code>. It doesn’t read data itself: instead, it takes the lines read by something else and turns them into lists of values by splitting on commas:</p>
+<p>Now let’s have a look at how we could parse the data using standard Python libraries. The library we’ll use is called <code>csv</code>. It doesn’t read data itself: instead, it takes the lines read by something else and turns them into lists of values by splitting on commas. We will also need to split the string on line separators before <code>csv</code> can read it:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> csv
+<span class="ch">import</span> io
 
-data = <span class="st">&#39;&#39;&#39;first,FIRST</span>
+data = <span class="st">u&#39;&#39;&#39;first,FIRST</span>
 <span class="st">second,SECOND</span>
 <span class="st">third,THIRD&#39;&#39;&#39;</span>
-reader = cStringIO.StringIO(data)
+reader = io.StringIO(data)
 wrapper = csv.reader(reader)
 <span class="kw">for</span> record in wrapper:
-    <span class="dt">print</span> record</code></pre>
+    <span class="dt">print</span>(record)</code></pre>
 <pre class="output"><code>[&#39;first&#39;, &#39;FIRST&#39;]
 [&#39;second&#39;, &#39;SECOND&#39;]
 [&#39;third&#39;, &#39;THIRD&#39;]</code></pre>
 <p>Putting it all together, we can get data for Canada like this:</p>
-<pre class="sourceCode python"><code class="sourceCode python">url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv&#39;</span>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> requests
+<span class="ch">import</span> io
+<span class="ch">import</span> csv
+url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv&#39;</span>
 response = requests.get(url)
 <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
-    <span class="dt">print</span> <span class="st">&#39;Failed to get data:&#39;</span>, response.status_code
+    <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
 <span class="kw">else</span>:
-    reader = cStringIO.StringIO(response.text)
+    reader = io.StringIO(response.text)
     wrapper = csv.reader(reader)
     <span class="kw">for</span> record in wrapper:
         year = <span class="dt">int</span>(record[<span class="dv">0</span>])
         value = <span class="dt">float</span>(record[<span class="dv">1</span>])
-        <span class="dt">print</span> year, <span class="st">&#39;:&#39;</span>, value</code></pre>
+        <span class="dt">print</span>(year, <span class="st">&#39;:&#39;</span>, value)</code></pre>
 <pre class="error"><code>---------------------------------------------------------------------------
 ValueError                                Traceback (most recent call last)
 &lt;ipython-input-6-da21db395042&gt; in &lt;module&gt;()
@@ -134,12 +114,16 @@ ValueError: invalid literal for int() with base 10: &#39;year&#39;</code></pre>
 <p>That error occurs because the first line of data is:</p>
 <pre><code>year,data</code></pre>
 <p>When we try to convert the string <code>'year'</code> to an integer, Python quite rightly complains. The fix is straightforward: we just need to ignore lines that start with the word <code>year</code>. And while we’re at it, we’ll put our results into a list instead of just printing them:</p>
-<pre class="sourceCode python"><code class="sourceCode python">url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv&#39;</span>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> requests
+<span class="ch">import</span> io
+<span class="ch">import</span> csv
+
+url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv&#39;</span>
 response = requests.get(url)
 <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
-    <span class="dt">print</span> <span class="st">&#39;Failed to get data:&#39;</span>, response.status_code
+    <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
 <span class="kw">else</span>:
-    reader = cStringIO.StringIO(response.text)
+    reader = io.StringIO(response.text)
     wrapper = csv.reader(reader)
     results = []
     <span class="kw">for</span> record in wrapper:
@@ -147,21 +131,10 @@ response = requests.get(url)
             year = <span class="dt">int</span>(record[<span class="dv">0</span>])
             value = <span class="dt">float</span>(record[<span class="dv">1</span>])
             results.append([year, value])
-    <span class="dt">print</span> <span class="st">&#39;first five results&#39;</span>
-    <span class="dt">print</span> results[:<span class="dv">5</span>]</code></pre>
+    <span class="dt">print</span>(<span class="st">&#39;first five results&#39;</span>)
+    <span class="dt">print</span>(results[:<span class="dv">5</span>])</code></pre>
 <pre class="output"><code>first five results
 [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879], [1904, -8.155729293823242], [1905, -7.547311305999756]]</code></pre>
-<div id="writing-to-strings" class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Writing to Strings</h2>
-</div>
-<div class="panel-body">
-<p><code>cStringIO</code> can also be used for output. Use this to write a test that the function <code>print_count</code> does the right thing:</p>
-<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> print_count(output, num):
-    <span class="kw">for</span> i in <span class="dt">range</span>(num):
-        <span class="dt">print</span> &gt;&gt; output, num</code></pre>
-</div>
-</div>
         </div>
       </div>
       </article>
