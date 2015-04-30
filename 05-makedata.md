@@ -93,10 +93,6 @@ save_records('AUS', 'BRA', [[1, 2], [3, 4]])
 and then check that the right output file has been created.
 Since we are bound to have the country codes anyway (having used them to look up our data), this is as little extra work as possible.
 
-> ## Testing Output {.challenge}
->
-> Modify `save_records` so that it can be tested using `cStringIO`.
-
 > ## Deciding What to Check {.challenge}
 >
 > Should `save_records` check that every record in its input is the same length?

@@ -1,5 +1,5 @@
 import requests
-import io
+import os
 import csv
 
 
@@ -12,8 +12,7 @@ def get_country_temperatures(country):
     base_url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/{0}.csv'
     actual_url = base_url.format(country)
     response = requests.get(actual_url)
-    reader = io.StringIO(response.text)
-    wrapper = csv.reader(reader)
+    wrapper = csv.reader(response.text.strip().split(os.linesep))
     result = []
     for record in wrapper:
         if record[0] != 'year':

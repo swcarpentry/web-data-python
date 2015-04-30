@@ -65,13 +65,12 @@ instead, it takes the lines read by something else and turns them into lists of 
 
 ~~~ {.python}
 import csv
-import io
+import os
 
-data = u'''first,FIRST
+data = '''first,FIRST
 second,SECOND
 third,THIRD'''
-reader = io.StringIO(data)
-wrapper = csv.reader(reader)
+wrapper = csv.reader(data.strip().split(os.linesep))
 for record in wrapper:
     print(record)
 ~~~
@@ -85,15 +84,14 @@ Putting it all together, we can get data for Canada like this:
 
 ~~~ {.python}
 import requests
-import io
+import os
 import csv
 url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv'
 response = requests.get(url)
 if response.status_code != 200:
     print('Failed to get data:', response.status_code)
 else:
-    reader = io.StringIO(response.text)
-    wrapper = csv.reader(reader)
+    wrapper = csv.reader(response.text.strip().split(os.linesep))
     for record in wrapper:
         year = int(record[0])
         value = float(record[1])
@@ -127,7 +125,7 @@ we'll put our results into a list instead of just printing them:
 
 ~~~ {.python}
 import requests
-import io
+import os
 import csv
 
 url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv'
@@ -135,8 +133,7 @@ response = requests.get(url)
 if response.status_code != 200:
     print('Failed to get data:', response.status_code)
 else:
-    reader = io.StringIO(response.text)
-    wrapper = csv.reader(reader)
+    wrapper = csv.reader(response.text.strip().split(os.linesep))
     results = []
     for record in wrapper:
         if record[0] != 'year':

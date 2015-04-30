@@ -23,8 +23,7 @@ def get_annual_mean_temp_by_country(country):
     if response.status_code != 200:
         print('Failed to get data:', response.status_code)
     else:
-        reader = io.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         results = []
         for record in wrapper:
             if record[0] != 'year':
@@ -75,8 +74,7 @@ def get_annual_mean_temp_by_country(country):
     if response.status_code != 200:
         print('Failed to get data:', response.status_code)
     else:
-        reader = io.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         results = []
         for record in wrapper:
             if record[0] != 'year':
@@ -109,8 +107,7 @@ def get_annual_mean_temp_by_country(country):
     response = requests.get(url)
     results = []
     if len(response.text) > 0:
-        reader = io.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         for record in wrapper:
             if record[0] != 'year':
                 year = int(record[0])
