@@ -152,9 +152,7 @@ if we get anything else, the response probably doesn't contain actual data
 > Read the [documentation](http://data.worldbank.org/developers/climate-data-api) for the Climate Data API,
 > and then write URLs to find the annual average temperature for Afghanistan between 1980 and 1999.
 
-> ## Follw up Multiple Choice Question {.callout}
->
-> To check student's understanding of this material, have them first answer this themselves, then justify thier answer to thier neighbor with the aim of pursading them  - and then answer it again.
+> ## Defining REST API {.challenge}
 >
 > An REST API is:
 > a) in CSV format

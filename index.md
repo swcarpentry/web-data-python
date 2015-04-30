@@ -8,10 +8,10 @@ and how to create data for others to use.
 > ## Prerequisites {.prereq}
 >
 > This lesson assumes learners understand basic Python programming.
->    Your students should be able to:
->    * Install a python library (perhavs via virtualenv?)
->    * understand a function well enough to write a basic one
->    * access the internet
+> Your students should be able to:
+> * Install a python library (perhavs via virtualenv?)
+> * understand a function well enough to write a basic one
+> * access the internet
 
 ## Topics
 
