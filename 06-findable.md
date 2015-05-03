@@ -138,3 +138,12 @@ By automating this process, blogging tools help us focus attention on things tha
 > ## Generating a Local Index (Large) {.challenge}
 >
 > Generate a local index file to show what data sets were created when.
+
+>## Indexing {.challenge}
+>
+> Index's are important for generated data because: 
+>a) They can be checked in an automated way for changes
+>b) The web server will not display the directory without an index
+>c) REST API's require an index to function
+>d) its too complicated for a program to calculate itself.
+>

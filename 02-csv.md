@@ -179,7 +179,7 @@ first five results
 >         print >> output, num
 > ~~~
 
->## The Makeup of CSV Files
+>## The Makeup of CSV Files {.challenge}
 >
 >CSV Files need to be separated into
 >a) records (fields) then rows(lines)
