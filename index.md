@@ -9,7 +9,7 @@ and how to create data for others to use.
 >
 > This lesson assumes learners understand basic Python programming.
 > Your students should be able to:
-> * Install a python library (perhavs via virtualenv?)
+> * Install a python library (perhaps via virtualenv?)
 > * understand a function well enough to write a basic one
 > * access the internet
 
