@@ -31,7 +31,7 @@ import numpy as np
 d = np.array(diff)
 ~~~
 
-and then plot the first column against the second:
+and then plot the first column against the second. Note that, like python arrays the counting starts at 0, not one:
 
 ~~~ {.python}
 plt.plot(d[:, 0], d[:, 1])
@@ -47,3 +47,12 @@ At this point, if we wanted a real answer, it would be time to break out a curve
 >
 > Modify the plotting commands so that the Y-axis scale runs from 0 to 32.
 > Do you think this gives you a more accurate or less accurate view of this data?
+
+>## Visualisation Libraries {.challenge}
+>
+> When graphing using python;
+>a) only the matplotlib library is available
+>b) matplotlib can only be used with the numpy library
+>c) it is important to get your data into the correct format for the graph required.
+>d) line charts are the best way to illustrate data
+> 

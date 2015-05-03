@@ -12,14 +12,11 @@ Our little program gets the data we want,
 but returns it as one long character string rather than as a list of numbers.
 There are two ways we could convert the former to the latter:
 
-*   Write a function to split that string on newline characters to create lines,
-    then split the lines on commas and convert the second part of each to a number.
+*   Write a function to split that string on newline characters to create lines, then split the lines on commas and convert the second part of each to a number.
 *   Use a couple of Python libraries to do this for us.
 
-Most experienced programmers would say that the second approach is easier,
-but "easy" is relative:
-using standard libraries is only more effective in practice if we know those libraries exist,
-and know enough about them to think about our problem in terms of what they can do.
+Most experienced programmers would say that the second approach is easier, but "easy" is relative:
+using standard libraries is only more effective in practice if we know those libraries exist, and know enough about them to think about our problem in terms of what they can do.
 
 Let's give both methods a try.
 Here's a small program to test the first approach:
@@ -48,8 +45,7 @@ input data as lines:
 ~~~
 
 We start by defining a string in our program to use as input data so that we can easily check the correctness of our output.
-The first three lines of code turn this one multi-line string into a list of strings
-by splitting on the newline characters (which are written `\n` in our program).
+The first three lines of code turn this one multi-line string into a list of strings by splitting on the newline characters (which are written `\n` in our program).
 The `for` loop then extracts the year and value from each line
 by splitting the line on the comma and converting the digits to numbers.
 
@@ -60,8 +56,7 @@ To do this, they use [escape sequences](reference.html#escape-sequence):
 > `\'` for a single quote, `\"` for a double quote, `\n` for a newline, and so on.
 
 Now let's have a look at how we could parse the data using a couple of standard Python libraries.
-The first,
-called `cStringIO`, lets Python treat a string as if it was an input file:
+The first, called `cStringIO`, lets Python treat a string as if it was an input file:
 
 ~~~ {.python}
 import cStringIO
@@ -82,10 +77,8 @@ second
 third
 ~~~
 
-The `cStringIO.StringIO` object that we assign to `reader` is an object that behaves like a file,
-but reads characters from a string instead of from something on our hard drive.
-As we'll see in the exercises,
-we can also write to a `StringIO` object,
+The `cStringIO.StringIO` object that we assign to `reader` is an object that behaves like a file, but reads characters from a string instead of from something on our hard drive.
+As we'll see in the exercises, we can also write to a `StringIO` object,
 which is very useful when we're testing programs.
 
 > ## Why the 'c'? {.callout}
@@ -151,8 +144,7 @@ When we try to convert the string `'year'` to an integer,
 Python quite rightly complains.
 The fix is straightforward:
 we just need to ignore lines that start with the word `year`.
-And while we're at it,
-we'll put our results into a list instead of just printing them:
+And while we're at it, we'll put our results into a list instead of just printing them:
 
 ~~~ {.python}
 url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv'
@@ -186,3 +178,12 @@ first five results
 >     for i in range(num):
 >         print >> output, num
 > ~~~
+
+>## The Makeup of CSV Files {.challenge}
+>
+>CSV Files need to be separated into
+>a) records (fields) then rows(lines)
+>b) rows(lines) then records (fields)
+>c) newline characters
+>d) commas and other characters
+> 
