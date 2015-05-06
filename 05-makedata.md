@@ -105,3 +105,12 @@ Since we are bound to have the country codes anyway (having used them to look up
 > ## Setting Up Locally {.challenge}
 >
 > Find out how to publish a file on your department's server.
+
+>## Published Data Consistency {.challenge}
+>
+> It is important for the file names of published data to be consistent because;
+>a) Some operating systems (e.g. Windows) treat spaces differently
+>b) You may not have access to your department's server to rename them
+>c) The cStringIO and csv libraries require it.
+>d) the files and data can be processed programmatically.
+>

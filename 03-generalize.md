@@ -342,3 +342,12 @@ Excellent: the assertions we've added will now alert us if we try to work with b
 > ~~~
 >
 > Rewrite `diff_records` to use `enumerate`.
+
+>## Error Handling {.challenge}
+>
+> Python scripts should have error handling code because:
+>a) Python is an inherently unreliable language
+>b) Functions can return errors
+>c) One should never trust the data provided is what is expected
+>d) A python script would stop on an error, so the task wouldn't be accomplished
+> 
