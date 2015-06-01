@@ -85,10 +85,10 @@ Cleaning up...</code></pre>
 url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv&#39;</span>
 response = requests.get(url)
 <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
-    <span class="dt">print</span> <span class="st">&#39;Failed to get data:&#39;</span>, response.status_code
+    <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
 <span class="kw">else</span>:
-    <span class="dt">print</span> <span class="st">&#39;First 100 characters of data are&#39;</span>
-    <span class="dt">print</span> response.text[:<span class="dv">100</span>]</code></pre>
+    <span class="dt">print</span>(<span class="st">&#39;First 100 characters of data are&#39;</span>)
+    <span class="dt">print</span>(response.text[:<span class="dv">100</span>])</code></pre>
 <pre class="output"><code>First 100 characters of data are
 year,data
 1901,-7.67241907119751

@@ -21,10 +21,9 @@ def get_annual_mean_temp_by_country(country):
     url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/' + country + '.csv'
     response = requests.get(url)
     if response.status_code != 200:
-        print 'Failed to get data:', response.status_code
+        print('Failed to get data:', response.status_code)
     else:
-        reader = cStringIO.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         results = []
         for record in wrapper:
             if record[0] != 'year':
@@ -38,7 +37,7 @@ This works:
 
 ~~~ {.python}
 canada = get_annual_mean_temp_by_country('CAN')
-print 'first five entries for Canada:', canada[:5]
+print('first five entries for Canada:', canada[:5])
 ~~~
 ~~~ {.output}
 first five entries for Canada: [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879], [1904, -8.155729293823242], [1905, -7.547311305999756]]
@@ -68,15 +67,14 @@ Let's check:
 def get_annual_mean_temp_by_country(country):
     '''Get the annual mean temperature for a country given its 3-letter ISO code (such as "CAN").'''
     url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/' + country + '.csv'
-    print 'url used is', url
+    print('url used is', url)
     response = requests.get(url)
-    print 'response code:', response.status_code
-    print 'length of data:', len(response.text)
+    print('response code:', response.status_code)
+    print('length of data:', len(response.text))
     if response.status_code != 200:
-        print 'Failed to get data:', response.status_code
+        print('Failed to get data:', response.status_code)
     else:
-        reader = cStringIO.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         results = []
         for record in wrapper:
             if record[0] != 'year':
@@ -86,7 +84,7 @@ def get_annual_mean_temp_by_country(country):
         return results
 
 latveria = get_annual_mean_temp_by_country('LTV')
-print 'number of records for Latveria:', len(latveria)
+print('number of records for Latveria:', len(latveria))
 ~~~
 ~~~ {.output}
 url used is http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/LTV.csv
@@ -109,8 +107,7 @@ def get_annual_mean_temp_by_country(country):
     response = requests.get(url)
     results = []
     if len(response.text) > 0:
-        reader = cStringIO.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         for record in wrapper:
             if record[0] != 'year':
                 year = int(record[0])
@@ -118,8 +115,8 @@ def get_annual_mean_temp_by_country(country):
                 results.append([year, value])
     return results
 
-print 'number of records for Canada:', len(get_annual_mean_temp_by_country('CAN'))
-print 'number of records for Latveria:', len(get_annual_mean_temp_by_country('LTV'))
+print('number of records for Canada:', len(get_annual_mean_temp_by_country('CAN')))
+print('number of records for Latveria:', len(get_annual_mean_temp_by_country('LTV')))
 ~~~
 ~~~ {.output}
 number of records for Canada: 109
@@ -159,10 +156,10 @@ which we return at the end.
 To see if this function works, we can run a couple of tests on made-up data:
 
 ~~~ {.python}
-print 'one record:', diff_records([[1900, 1.0]],
-                                  [[1900, 2.0]])
-print 'two records:', diff_records([[1900, 1.0], [1901, 10.0]],
-                                   [[1900, 2.0], [1901, 20.0]])
+print('one record:', diff_records([[1900, 1.0]],
+                                  [[1900, 2.0]]))
+print('two records:', diff_records([[1900, 1.0], [1901, 10.0]],
+                                   [[1900, 2.0], [1901, 20.0]]))
 ~~~
 ~~~ {.output}
 one record: [[1900, -1.0]]
@@ -172,20 +169,20 @@ two records: [[1900, -1.0], [1901, -10.0]]
 That looks pretty good—but what about these cases?
 
 ~~~ {.python}
-print 'mis-matched years:', diff_records([[1900, 1.0]],
-                                         [[1999, 2.0]])
-print 'left is shorter', diff_records([[1900, 1.0]],
-                                      [[1900, 10.0], [1901, 20.0]])
-print 'right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
-                                       [[1900, 10.0]])
+print('mis-matched years:', diff_records([[1900, 1.0]],
+                                         [[1999, 2.0]]))
+print('left is shorter', diff_records([[1900, 1.0]],
+                                      [[1900, 10.0], [1901, 20.0]]))
+print('right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
+                                       [[1900, 10.0]]))
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 IndexError                                Traceback (most recent call last)
 <ipython-input-15-7582f56db8bf> in <module>()
       4                                       [[1900, 10.0], [1901, 20.0]])
-      5 print 'right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
-----> 6                                        [[1900, 10.0]])
+      5 print('right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
+----> 6                                        [[1900, 10.0]]))
 
 <ipython-input-13-67464343fd99> in diff_records(left, right)
       5     for i in range(num_years):
@@ -234,10 +231,10 @@ def diff_records(left, right):
 Do our "good" tests pass?
 
 ~~~ {.python}
-print 'one record:', diff_records([[1900, 1.0]],
-                                  [[1900, 2.0]])
-print 'two records:', diff_records([[1900, 1.0], [1901, 10.0]],
-                                   [[1900, 2.0], [1901, 20.0]])
+print('one record:', diff_records([[1900, 1.0]],
+                                  [[1900, 2.0]]))
+print('two records:', diff_records([[1900, 1.0], [1901, 10.0]],
+                                   [[1900, 2.0], [1901, 20.0]]))
 ~~~
 ~~~ {.output}
 one record: [[1900, -1.0]]
@@ -247,15 +244,15 @@ two records: [[1900, -1.0], [1901, -10.0]]
 What about our the three tests that we now expect to fail?
 
 ~~~ {.python}
-print 'mis-matched years:', diff_records([[1900, 1.0]],
-                                         [[1999, 2.0]])
+print('mis-matched years:', diff_records([[1900, 1.0]],
+                                         [[1999, 2.0]]))
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-18-c101917a748e> in <module>()
-      1 print 'mis-matched years:', diff_records([[1900, 1.0]],
-----> 2                                          [[1999, 2.0]])
+      1 print('mis-matched years:', diff_records([[1900, 1.0]],
+----> 2                                          [[1999, 2.0]]))
 
 <ipython-input-16-d41327791c15> in diff_records(left, right)
      10         left_year, left_value = left[i]
@@ -268,15 +265,15 @@ AssertionError: Record 0 is for different years: 1900 vs 1999mis-matched years:
 ~~~
 
 ~~~ {.python}
-print 'left is shorter', diff_records([[1900, 1.0]],
-                                      [[1900, 10.0], [1901, 20.0]])
+print('left is shorter', diff_records([[1900, 1.0]],
+                                      [[1900, 10.0], [1901, 20.0]]))
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-19-682d448d921e> in <module>()
-      1 print 'left is shorter', diff_records([[1900, 1.0]],
-----> 2                                       [[1900, 10.0], [1901, 20.0]])
+      1 print('left is shorter', diff_records([[1900, 1.0]],
+----> 2                                       [[1900, 10.0], [1901, 20.0]]))
 
 <ipython-input-16-d41327791c15> in diff_records(left, right)
       4     Fails if the inputs are not for exactly corresponding years.
@@ -288,15 +285,15 @@ AssertionError                            Traceback (most recent call last)
 AssertionError: Inputs have different lengths. left is shorter
 ~~~
 ~~~ {.python}
-print 'right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
-                                       [[1900, 10.0]])
+print('right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
+                                       [[1900, 10.0]]))
 ~~~
 ~~~ {.error}
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-20-a475e608dd70> in <module>()
-      1 print 'right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
-----> 2                                        [[1900, 10.0]])
+      1 print('right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
+----> 2                                        [[1900, 10.0]]))
 
 <ipython-input-16-d41327791c15> in diff_records(left, right)
       4     Fails if the inputs are not for exactly corresponding years.
@@ -330,7 +327,7 @@ Excellent: the assertions we've added will now alert us if we try to work with b
 >
 > ~~~ {.python}
 > for (i, c) in enumerate('abc'):
->     print i, '=', c
+>     print(i, '=', c)
 > ~~~
 >
 > prints:

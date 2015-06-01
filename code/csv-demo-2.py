@@ -1,8 +1,8 @@
-import cStringIO
+import os
 import csv
 
 data = '1901,12.3\n1902,45.6\n1903,78.9\n'
-reader = cStringIO.StringIO(data)
-wrapper = csv.reader(reader)
+wrapper = csv.reader(data.strip().split(os.linesep))
+
 for record in wrapper:
-    print record
+    print(record)

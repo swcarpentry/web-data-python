@@ -1,6 +1,7 @@
 import requests
-import cStringIO
+import os
 import csv
+
 
 def compare_countries(left_country, right_country):
     '''
@@ -9,10 +10,11 @@ def compare_countries(left_country, right_country):
     left_data = get_country_temperatures(left_country)
     right_data = get_country_temperatures(right_country)
     result = []
-    for ( (left_year, left_value), (right_year, right_value) ) in zip(left_country, right_country):
+    for ((left_year, left_value), (right_year, right_value)) in zip(left_country, right_country):
         assert left_year == right_year, 'Year mismatch: {0} vs {1}'.format(left_year, right_year)
         result.append([left_year, left_value - right_value])
     return result
+
 
 def get_country_temperatures(country):
     '''
@@ -23,8 +25,7 @@ def get_country_temperatures(country):
     base_url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/{0}.csv'
     actual_url = base_url.format(country)
     response = requests.get(actual_url)
-    reader = cStringIO.StringIO(response.text)
-    wrapper = csv.reader(reader)
+    wrapper = csv.reader(response.text.strip().split(os.linesep))
     result = []
     for record in wrapper:
         if record[0] != 'year':

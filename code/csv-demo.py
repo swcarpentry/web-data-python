@@ -1,8 +1,8 @@
-import cStringIO
+import os
 import csv
 
-data = 'first\nsecond\nthird\n'
-reader = cStringIO.StringIO(data)
-wrapper = csv.reader(reader)
+data = u'first\nsecond\nthird\n'
+wrapper = csv.reader(data.strip().split(os.linesep))
+
 for record in wrapper:
-    print record
+    print(record)
