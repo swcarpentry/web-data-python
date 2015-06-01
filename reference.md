@@ -10,12 +10,12 @@ subtitle: Reference
 
 ## [Handling CSV Data](02-csv.html)
 
-*   Use the `io` library to treat text as input or output files.
 *   Use the `csv` library to read comma-separated values.
 
 ## [Generalizing and Handling Errors](03-generalize.html)
 
 *   Write tests.
+*   Don't fail silently.
 
 ## [Visualization](04-visualize.html)
 

@@ -15,6 +15,11 @@ and how to create data for others to use.
 > *   Write and call simple functions
 > *   Access the Internet in class
 
+> ## Getting ready {.getready}
+>
+> You must have Python and network access,
+> and you will need to be able to install Python libraries on your computer.
+
 ## Topics
 
 1.  [Getting Data](01-getdata.html)
