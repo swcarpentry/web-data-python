@@ -32,8 +32,8 @@ subtitle: Reference
 
 ## Glossary
 
-Representational State Transfer (REST):
-:   a set of patterns for sharing data on the web.
+Application Programming Interface (API):
+:   A set of functions through which programs can use a service.
 
 comma-separated values (CSV):
 :   A common textual representation for tables
@@ -51,6 +51,9 @@ index:
     actual data sets.
     An index contains the metadata that makes actual data findable.
 
+Representational State Transfer (REST):
+:   a set of patterns for sharing data on the web.
+
 silent failure:
 :   Failing without producing any warning messages.
     Silent failures are hard to detect and debug.
@@ -63,3 +66,7 @@ unit testing tool:
 :   A software library and associated tool or tools
     that helps programmers write short tests for their code
     and run them systematically.
+
+wrapper:
+:   A function that is "wrapped around" something
+    to process that thing's output in some way.

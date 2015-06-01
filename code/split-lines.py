@@ -1,0 +1,5 @@
+reader = open('test01.csv', 'r')
+data = reader.read()
+lines = data.split('\n')
+print(lines)
+reader.close()

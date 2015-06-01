@@ -7,11 +7,13 @@ and how to create data for others to use.
 
 > ## Prerequisites {.prereq}
 >
-> This lesson assumes learners understand basic Python programming.
-> Your students should be able to:
-> * Install a python library (perhaps via virtualenv?)
-> * understand a function well enough to write a basic one
-> * access the internet
+> This lesson assumes learners understand basic Python programming,
+> and can:
+>
+> *   Install Python libraries
+> *   Use strings and lists
+> *   Write and call simple functions
+> *   Access the Internet in class
 
 ## Topics
 

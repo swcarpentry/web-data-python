@@ -34,86 +34,149 @@
 </div>
 <div class="panel-body">
 <ul>
-<li>Explain what CSV is, and read CSV data sets.</li>
+<li>Parse CSV data using the <code>csv</code> library.</li>
+<li>Test a program that parses CSV using multiline strings.</li>
 </ul>
 </div>
 </section>
 <p>Our little program gets the data we want, but returns it as one long character string rather than as a list of numbers. There are two ways we could convert the former to the latter:</p>
 <ul>
 <li>Write a function to split that string on newline characters to create lines, then split the lines on commas and convert the second part of each to a number.</li>
-<li>Use a couple of Python libraries to do this for us.</li>
+<li>Use a python library to do this for us.</li>
 </ul>
-<p>Most experienced programmers would say that the second approach is easier, but “easy” is relative: using standard libraries is only more effective in practice if we know those libraries exist, and know enough about them to think about our problem in terms of what they can do.</p>
-<p>Let’s give both methods a try. Here’s a small program to test the first approach:</p>
-<pre class="sourceCode python"><code class="sourceCode python">input_data = <span class="st">&#39;&#39;&#39;1901,12.3</span>
-<span class="st">1902,45.6</span>
-<span class="st">1903,78.9&#39;&#39;&#39;</span>
-
-as_lines = input_data.split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)
-<span class="dt">print</span>(<span class="st">&#39;input data as lines:&#39;</span>)
-<span class="dt">print</span>(as_lines)
-
-<span class="kw">for</span> line in as_lines:
-    fields = line.split(<span class="st">&#39;,&#39;</span>) <span class="co"># turn &#39;1901,12.3&#39; into [&#39;1901&#39;, &#39;12.3&#39;]</span>
-    year = <span class="dt">int</span>(fields[<span class="dv">0</span>])    <span class="co"># turn the text &#39;1901&#39; into the integer 1901</span>
-    value = <span class="dt">float</span>(fields[<span class="dv">1</span>]) <span class="co"># turn the text &#39;12.3&#39; into the number 12.3</span>
-    <span class="dt">print</span>(year, <span class="st">&#39;:&#39;</span>, value)</code></pre>
-<pre class="output"><code>input data as lines:
-[&#39;1901,12.3&#39;, &#39;1902,45.6&#39;, &#39;1903,78.9&#39;]
-1901 : 12.3
-1902 : 45.6
-1903 : 78.9</code></pre>
-<p>We start by defining a string in our program to use as input data so that we can easily check the correctness of our output. The first three lines of code turn this one multi-line string into a list of strings by splitting on the newline characters (which are written <code>\n</code> in our program). The <code>for</code> loop then extracts the year and value from each line by splitting the line on the comma and converting the digits to numbers.</p>
-<aside class="callout panel panel-info">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pushpin"></span>Escape Sequences</h2>
-</div>
-<div class="panel-body">
-<p>Programmers need a way to put quotes, double quotes, and other special characters in strings. To do this, they use <a href="reference.html#escape-sequence">escape sequences</a>: <code>\'</code> for a single quote, <code>\&quot;</code> for a double quote, <code>\n</code> for a newline, and so on.</p>
-</div>
-</aside>
-<p>Now let’s have a look at how we could parse the data using standard Python libraries. The library we’ll use is called <code>csv</code>. It doesn’t read data itself: instead, it takes the lines read by something else and turns them into lists of values by splitting on commas. We will also need to split the string on line separators before <code>csv</code> can read it:</p>
+<p>Most experienced programmers would say that the second approach is easier, but “easy” is relative: using standard libraries is only easier if we know that those libraries exist and how to use them.</p>
+<p>Let’s try the first approach. To begin, we create a file called <code>test01.csv</code> that contains the following three lines:</p>
+<pre><code>1901,12.3
+1902,45.6
+1903,78.9</code></pre>
+<p>It’s easy to read this file line by line and (for example) report the length of each line:</p>
+<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
+<span class="kw">for</span> line in reader:
+    <span class="dt">print</span>(<span class="dt">len</span>(line))
+reader.close()</code></pre>
+<pre class="output"><code>10
+10
+10</code></pre>
+<p>We can also split each line on commas to turn each one into a list of string fragments:</p>
+<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
+<span class="kw">for</span> line in reader:
+    fields = line.split(<span class="st">&#39;,&#39;</span>)
+    <span class="dt">print</span>(fields)
+reader.close()</code></pre>
+<pre class="output"><code>[&#39;1901&#39;, &#39;12.3\n&#39;]
+[&#39;1902&#39;, &#39;45.6\n&#39;]
+[&#39;1903&#39;, &#39;78.9\n&#39;]</code></pre>
+<p>The dates are correct, but the values all end with <code>\n</code>. This is an <a href="reference.html#escape-sequence">escape sequence</a> that represents the newline character at the end of each line. To get rid of it, we should strip leading and trailing whitespace from each line before splitting it on commas:</p>
+<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
+<span class="kw">for</span> line in reader:
+    fields = line.strip().split(<span class="st">&#39;,&#39;</span>)
+    <span class="dt">print</span>(fields)
+reader.close()</code></pre>
+<pre class="output"><code>[&#39;1901&#39;, &#39;12.3&#39;]
+[&#39;1902&#39;, &#39;45.6&#39;]
+[&#39;1903&#39;, &#39;78.9&#39;]</code></pre>
+<p>Now let’s have a look at how we could parse the data using standard Python libraries instead. The library we’ll use is called <code>csv</code>. It doesn’t read data itself: instead, it takes the lines read by something else and turns them into lists of values by splitting on commas. Here’s one way to use it:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> csv
-<span class="ch">import</span> os
 
-data = <span class="st">&#39;&#39;&#39;first,FIRST</span>
-<span class="st">second,SECOND</span>
-<span class="st">third,THIRD&#39;&#39;&#39;</span>
-wrapper = csv.reader(data.strip().split(os.linesep))
-<span class="kw">for</span> record in wrapper:
+raw = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
+cooked = csv.reader(raw)
+<span class="kw">for</span> record in cooked:
+    <span class="dt">print</span>(record)
+raw.close()</code></pre>
+<pre class="ouptut"><code>[&#39;1901&#39;, &#39;12.3&#39;]
+[&#39;1902&#39;, &#39;45.6&#39;]
+[&#39;1903&#39;, &#39;78.9&#39;]</code></pre>
+<p>Here, <code>raw</code> reads data in the normal way, while <code>cooked</code> is a <a href="reference.html#wrapper">wrapper</a> that takes a line of text and turns it into a list of fields.</p>
+<p>We can equally well give a <code>csv.reader</code> a list of strings rather than a file:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> csv
+
+raw = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
+lines = raw.readlines()
+raw.close()
+cooked = csv.reader(lines)
+<span class="kw">for</span> record in cooked:
     <span class="dt">print</span>(record)</code></pre>
-<pre class="output"><code>[&#39;first&#39;, &#39;FIRST&#39;]
-[&#39;second&#39;, &#39;SECOND&#39;]
-[&#39;third&#39;, &#39;THIRD&#39;]</code></pre>
-<p>Putting it all together, we can get data for Canada like this:</p>
+<pre class="output"><code>[&#39;1901&#39;, &#39;12.3&#39;]
+[&#39;1902&#39;, &#39;45.6&#39;]
+[&#39;1903&#39;, &#39;78.9&#39;]</code></pre>
+<p>Using the <code>csv</code> library doesn’t seem any simpler than just splitting strings, but look at what happens when we have data like this:</p>
+<pre><code>&quot;Meltzer, Marlyn Wescoff&quot;,1922,2008
+&quot;Spence, Frances Bilas&quot;,1922,2012
+&quot;Teitelbaum,Ruth Lichterman&quot;,1924,1986</code></pre>
+<p>With simple string splitting, our output is:</p>
+<pre class="output"><code>[&#39;&quot;Meltzer&#39;, &#39; Marlyn Wescoff&quot;&#39;, &#39;1922&#39;, &#39;2008&#39;]
+[&#39;&quot;Spence&#39;, &#39; Frances Bilas&quot;&#39;, &#39;1922&#39;, &#39;2012&#39;]
+[&#39;&quot;Teitelbaum&#39;, &#39;Ruth Lichterman&quot;&#39;, &#39;1924&#39;, &#39;1986&#39;]</code></pre>
+<p>The double quotes are still there, and the field containing each person’s name has been split into pieces. If we use the <code>csv</code> library, on the other hand, the output is:</p>
+<pre class="output"><code>[&#39;Meltzer, Marlyn Wescoff&#39;, &#39;1922&#39;, &#39;2008&#39;]
+[&#39;Spence, Frances Bilas&#39;, &#39;1922&#39;, &#39;2012&#39;]
+[&#39;Teitelbaum,Ruth Lichterman&#39;, &#39;1924&#39;, &#39;1986&#39;]</code></pre>
+<p>because the library understands how to handle text fields containing commas (and a lot more).</p>
+<p>We need to do one more thing before using <code>csv</code> with the climate data. When we use the World Bank’s API to get data for a particular country, it comes back as one long string:</p>
+<pre><code>year,data
+1901,-7.67241907119751
+1902,-7.862711429595947
+1903,-7.910782814025879
+...</code></pre>
+<p>We have to break this into lines before giving it to <code>csv.reader</code>, and we can do that by splitting the string on the same <code>\n</code> escape sequence we encountered a few moments ago. To see how this works, let’s read <code>test01.csv</code> into memory and split it into pieces:</p>
+<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
+data = reader.read()
+lines = data.split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)
+<span class="dt">print</span>(lines)
+reader.close()</code></pre>
+<pre class="output"><code>[&#39;1901,12.3&#39;, &#39;1902,45.6&#39;, &#39;1903,78.9&#39;, &#39;&#39;]</code></pre>
+<p>That’s <em>almost</em> right, but why is there an empty string at the end of the list? The answer is that the last line of the file ends in a newline, so Python does the same thing it does in the example below:</p>
+<pre class="sourceCode python"><code class="sourceCode python">fields = <span class="st">&#39;a-b-&#39;</span>.split(<span class="st">&#39;-&#39;</span>)
+<span class="dt">print</span>(fields)</code></pre>
+<pre class="output"><code>[&#39;a&#39;, &#39;b&#39;, &#39;&#39;]</code></pre>
+<p>The solution once again is to strip leading and trailing whitespace before splitting:</p>
+<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
+data = reader.read()
+lines = data.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)
+<span class="dt">print</span>(lines)
+reader.close()</code></pre>
+<pre class="output"><code>[&#39;1901,12.3&#39;, &#39;1902,45.6&#39;, &#39;1903,78.9&#39;]</code></pre>
+<p>Putting this all together, we can get data for Canada like this:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> requests
-<span class="ch">import</span> os
 <span class="ch">import</span> csv
+
 url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv&#39;</span>
 response = requests.get(url)
 <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
     <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
 <span class="kw">else</span>:
-    wrapper = csv.reader(response.text.strip().split(os.linesep))
+    wrapper = csv.reader(response.text.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>))
+    <span class="kw">for</span> record in wrapper:
+        <span class="dt">print</span>(record)</code></pre>
+<pre class="output"><code>[&#39;year&#39;, &#39;data&#39;]
+[&#39;1901&#39;, &#39;-7.67241907119751&#39;]
+[&#39;1902&#39;, &#39;-7.862711429595947&#39;]
+[&#39;1903&#39;, &#39;-7.910782814025879&#39;]
+[&#39;1904&#39;, &#39;-8.155729293823242&#39;]
+[&#39;1905&#39;, &#39;-7.547311305999756&#39;]
+...</code></pre>
+<p>That looks like progress, so let’s convert the data from strings to the numbers we actually want:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> requests
+<span class="ch">import</span> csv
+
+url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv&#39;</span>
+response = requests.get(url)
+<span class="kw">if</span> response.status_code != <span class="dv">200</span>:
+    <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
+<span class="kw">else</span>:
+    wrapper = csv.reader(response.text.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>))
     <span class="kw">for</span> record in wrapper:
         year = <span class="dt">int</span>(record[<span class="dv">0</span>])
         value = <span class="dt">float</span>(record[<span class="dv">1</span>])
-        <span class="dt">print</span>(year, <span class="st">&#39;:&#39;</span>, value)</code></pre>
-<pre class="error"><code>---------------------------------------------------------------------------
-ValueError                                Traceback (most recent call last)
-&lt;ipython-input-6-da21db395042&gt; in &lt;module&gt;()
-      7     wrapper = csv.reader(reader)
-      8     for record in wrapper:
-----&gt; 9         year = int(record[0])
-     10         value = float(record[1])
-     11         print year, &#39;:&#39;, value
-
+        <span class="dt">print</span>(year, value)</code></pre>
+<pre class="error"><code>Traceback (most recent call last):
+  File &quot;api-with-naive-converting.py&quot;, line 11, in &lt;module&gt;
+    year = int(record[0])
 ValueError: invalid literal for int() with base 10: &#39;year&#39;</code></pre>
-<p>That error occurs because the first line of data is:</p>
+<p>The error occurs because the first line of data is:</p>
 <pre><code>year,data</code></pre>
-<p>When we try to convert the string <code>'year'</code> to an integer, Python quite rightly complains. The fix is straightforward: we just need to ignore lines that start with the word <code>year</code>. And while we’re at it, we’ll put our results into a list instead of just printing them:</p>
+<p>When we try to convert the string <code>'year'</code> to an integer, Python quite rightly complains. The fix is straightforward: we just need to ignore lines that start with the word <code>year</code>:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> requests
-<span class="ch">import</span> os
 <span class="ch">import</span> csv
 
 url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv&#39;</span>
@@ -121,17 +184,19 @@ response = requests.get(url)
 <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
     <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
 <span class="kw">else</span>:
-    wrapper = csv.reader(response.text.strip().split(os.linesep))
+    wrapper = csv.reader(response.text.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>))
     results = []
     <span class="kw">for</span> record in wrapper:
         <span class="kw">if</span> record[<span class="dv">0</span>] != <span class="st">&#39;year&#39;</span>:
             year = <span class="dt">int</span>(record[<span class="dv">0</span>])
             value = <span class="dt">float</span>(record[<span class="dv">1</span>])
-            results.append([year, value])
-    <span class="dt">print</span>(<span class="st">&#39;first five results&#39;</span>)
-    <span class="dt">print</span>(results[:<span class="dv">5</span>])</code></pre>
-<pre class="output"><code>first five results
-[[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879], [1904, -8.155729293823242], [1905, -7.547311305999756]]</code></pre>
+            <span class="dt">print</span>(year, value)</code></pre>
+<pre class="output"><code>1901 -7.67241907119751
+1902 -7.862711429595947
+1903 -7.910782814025879
+1904 -8.155729293823242
+1905 -7.547311305999756
+...</code></pre>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>The Makeup of CSV Files</h2>
