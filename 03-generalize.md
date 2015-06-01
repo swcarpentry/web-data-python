@@ -12,18 +12,22 @@ minutes: 15
 Now that we know how to get the data for Canada,
 let's create a function that will do the same thing for an arbitrary country.
 The steps are simple:
-copy the code we've written into a function that takes a 3-letter country code as a parameter,
-and insert that country code into the URL at the appropriate place:
+
+1.  copy the code we've written into a function that takes a 3-letter country code as a parameter,
+2.  insert that country code into the URL at the appropriate place, and
+3.  return the result as a list instead of printing it.
+
+The resulting function looks like:
 
 ~~~ {.python}
-def get_annual_mean_temp_by_country(country):
+def annual_mean_temp(country):
     '''Get the annual mean temperature for a country given its 3-letter ISO code (such as "CAN").'''
     url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/' + country + '.csv'
     response = requests.get(url)
     if response.status_code != 200:
         print('Failed to get data:', response.status_code)
     else:
-        wrapper = csv.reader(response.text.strip().split(os.linesep))
+        wrapper = csv.reader(response.text.strip().split('\n'))
         results = []
         for record in wrapper:
             if record[0] != 'year':
@@ -36,35 +40,39 @@ def get_annual_mean_temp_by_country(country):
 This works:
 
 ~~~ {.python}
-canada = get_annual_mean_temp_by_country('CAN')
-print('first five entries for Canada:', canada[:5])
+canada = annual_mean_temp('CAN')
+print('first three entries for Canada:', canada[:3])
 ~~~
 ~~~ {.output}
-first five entries for Canada: [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879], [1904, -8.155729293823242], [1905, -7.547311305999756]]
+first three entries for Canada: [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879]]
 ~~~
 
-but there's a problem. Look what happens when we pass in an invalid country identifier:
+However,
+there's a problem.
+Look what happens when we pass in an invalid country identifier:
 
 ~~~ {.python}
-latveria = get_annual_mean_temp_by_country('LTV')
-print 'first five entries for Latveria:', latveria[:5]
+latveria = annual_mean_temp('LTV')
+print 'first three entries for Latveria:', latveria[:3]
 ~~~
 ~~~ {.output}
-first five entries for Latveria: []
+first three entries for Latveria: []
 ~~~
 
 Latveria doesn't exist,
 so why is our function returning an empty list rather than printing an error message?
 The non-appearance of an error message must mean that the response code was 200;
-if so,
-we would have gone into the `else` branch,
-assigned an empty list to `results`,
-and then... hm...
-All right, if the response code was 200 and there was no data, that would explain what we're seeing.
+if it was anything else,
+we would have gone into the `if` branch,
+printed a message,
+and returned `None`
+(which is what functions do when they're not told to return anything specific).
+
+So if the response code was 200 and there was no data, that would explain what we're seeing.
 Let's check:
 
 ~~~ {.python}
-def get_annual_mean_temp_by_country(country):
+def annual_mean_temp(country):
     '''Get the annual mean temperature for a country given its 3-letter ISO code (such as "CAN").'''
     url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/' + country + '.csv'
     print('url used is', url)
@@ -74,7 +82,7 @@ def get_annual_mean_temp_by_country(country):
     if response.status_code != 200:
         print('Failed to get data:', response.status_code)
     else:
-        wrapper = csv.reader(response.text.strip().split(os.linesep))
+        wrapper = csv.reader(response.text.strip().split('\n'))
         results = []
         for record in wrapper:
             if record[0] != 'year':
@@ -83,7 +91,7 @@ def get_annual_mean_temp_by_country(country):
                 results.append([year, value])
         return results
 
-latveria = get_annual_mean_temp_by_country('LTV')
+latveria = annual_mean_temp('LTV')
 print('number of records for Latveria:', len(latveria))
 ~~~
 ~~~ {.output}
@@ -93,12 +101,16 @@ length of data: 0
 number of records for Latveria: 0
 ~~~
 
-Great: after a bit more experimenting, we discover that the site *always* returns a 200 status code.
-The only way to tell if there's real data or not will be to check if `response.text` is empty.
+In other words,
+the World Bank is always saying,
+"I was able to answer your query,"
+even when it actually can't.
+After a bit more experimenting, we discover that the site *always* returns a 200 status code.
+The only way to tell if there's real data or not is to check if `response.text` is empty.
 Here's the updated function:
 
 ~~~ {.python}
-def get_annual_mean_temp_by_country(country):
+def annual_mean_temp(country):
     '''
     Get the annual mean temperature for a country given its 3-letter ISO code (such as "CAN").
     Returns an empty list if the country code is invalid.
@@ -107,7 +119,7 @@ def get_annual_mean_temp_by_country(country):
     response = requests.get(url)
     results = []
     if len(response.text) > 0:
-        wrapper = csv.reader(response.text.strip().split(os.linesep))
+        wrapper = csv.reader(response.text.strip().split('\n'))
         for record in wrapper:
             if record[0] != 'year':
                 year = int(record[0])
@@ -115,8 +127,8 @@ def get_annual_mean_temp_by_country(country):
                 results.append([year, value])
     return results
 
-print('number of records for Canada:', len(get_annual_mean_temp_by_country('CAN')))
-print('number of records for Latveria:', len(get_annual_mean_temp_by_country('LTV')))
+print('number of records for Canada:', len(annual_mean_temp('CAN')))
+print('number of records for Latveria:', len(annual_mean_temp('LTV')))
 ~~~
 ~~~ {.output}
 number of records for Canada: 109
@@ -126,7 +138,7 @@ number of records for Latveria: 0
 Now that we can get surface temperatures for different countries,
 we can write a function to compare those values.
 (We'll jump straight into writing a function because by now it's clear that's what we're eventually going to do anyway.)
-Here's our first cut:
+Here's our first attempt:
 
 ~~~ {.python}
 def diff_records(left, right):
@@ -307,16 +319,22 @@ AssertionError: Inputs have different lengths. right is shorter
 
 Excellent: the assertions we've added will now alert us if we try to work with badly-formatted or inconsistent data.
 
-> ## There's a Better Way to Do It {.callout}
+>## Error Handling {.challenge}
 >
-> We had to run each test in a cell of its own because Python stops executing the code in a cell as soon as an assertion fails,
-> and we want to make sure all three tests actually run.
-> A [unit testing tool](reference.html#unit-testing-tool) would handle this for us,
-> and do much else as well.
+> Python scripts should have error handling code because:
+>
+> 1.  Python is an inherently unreliable language.
+> 2.  Functions can return errors.
+> 3.  One should never trust the data provided is what is expected.
+> 4.  A python script would stop on an error, so the task wouldn't be accomplished.
 
 > ## When to Complain? {.challenge}
 >
-> Should `get_annual_mean_temp_by_country` print an error mesage when it doesn't get data?
+> We have actually just committed the same mistake as the World Bank:
+> if someone gives `annual_mean_temp` an invalid country identifier,
+> it doesn't report an error,
+> but instead returns an empty list,
+> so the caller has to somehow know to look for that.
 > Should it use an assertion to fail if it doesn't get data?
 > Why or why not?
 
@@ -339,12 +357,3 @@ Excellent: the assertions we've added will now alert us if we try to work with b
 > ~~~
 >
 > Rewrite `diff_records` to use `enumerate`.
-
->## Error Handling {.challenge}
->
-> Python scripts should have error handling code because:
->a) Python is an inherently unreliable language
->b) Functions can return errors
->c) One should never trust the data provided is what is expected
->d) A python script would stop on an error, so the task wouldn't be accomplished
-> 

@@ -175,11 +175,11 @@ if we get anything else, the response probably doesn't contain actual data
 
 > ## Defining REST API {.challenge}
 >
-> An REST API is:
-> a) a data format
-> b) a way of accessing data via an URL
-> c) less work for the server
-> d) only accessable via Python libraries like Requests
+> A REST API is:
+> 1.  A data format.
+> 2.  A way of accessing data via an URL.
+> 3.  Less work for the server.
+> 4.  Only accessable via Python libraries like Requests.
 
 > ## Get Data for Guatemala {.challenge}
 > 

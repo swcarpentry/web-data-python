@@ -34,10 +34,9 @@ we create a file called `test01.csv` that contains the following three lines:
 It's easy to read this file line by line and (for example) report the length of each line:
 
 ~~~ {.python}
-reader = open('test01.csv', 'r')
-for line in reader:
-    print(len(line))
-reader.close()
+with open('test01.csv', 'r') as reader:
+    for line in reader:
+        print(len(line))
 ~~~
 ~~~ {.output}
 10
@@ -48,11 +47,10 @@ reader.close()
 We can also split each line on commas to turn each one into a list of string fragments:
 
 ~~~ {.python}
-reader = open('test01.csv', 'r')
-for line in reader:
-    fields = line.split(',')
-    print(fields)
-reader.close()
+with open('test01.csv', 'r') as reader:
+    for line in reader:
+        fields = line.split(',')
+        print(fields)
 ~~~
 ~~~ {.output}
 ['1901', '12.3\n']
@@ -68,11 +66,10 @@ To get rid of it,
 we should strip leading and trailing whitespace from each line before splitting it on commas:
 
 ~~~ {.python}
-reader = open('test01.csv', 'r')
-for line in reader:
-    fields = line.strip().split(',')
-    print(fields)
-reader.close()
+with open('test01.csv', 'r') as reader:
+    for line in reader:
+        fields = line.strip().split(',')
+        print(fields)
 ~~~
 ~~~ {.output}
 ['1901', '12.3']
@@ -89,11 +86,10 @@ Here's one way to use it:
 ~~~ {.python}
 import csv
 
-raw = open('test01.csv', 'r')
-cooked = csv.reader(raw)
-for record in cooked:
-    print(record)
-raw.close()
+with open('test01.csv', 'r') as raw:
+    cooked = csv.reader(raw)
+    for record in cooked:
+        print(record)
 ~~~
 ~~~ {.ouptut}
 ['1901', '12.3']
@@ -111,9 +107,8 @@ We can equally well give a `csv.reader` a list of strings rather than a file:
 ~~~ {.python}
 import csv
 
-raw = open('test01.csv', 'r')
-lines = raw.readlines()
-raw.close()
+with open('test01.csv', 'r') as raw:
+    lines = raw.readlines()
 cooked = csv.reader(lines)
 for record in cooked:
     print(record)
@@ -175,11 +170,10 @@ To see how this works,
 let's read `test01.csv` into memory and split it into pieces:
 
 ~~~ {.python}
-reader = open('test01.csv', 'r')
-data = reader.read()
-lines = data.split('\n')
-print(lines)
-reader.close()
+with open('test01.csv', 'r') as reader:
+    data = reader.read()
+    lines = data.split('\n')
+    print(lines)
 ~~~
 ~~~ {.output}
 ['1901,12.3', '1902,45.6', '1903,78.9', '']
@@ -200,11 +194,10 @@ print(fields)
 The solution once again is to strip leading and trailing whitespace before splitting:
 
 ~~~ {.python}
-reader = open('test01.csv', 'r')
-data = reader.read()
-lines = data.strip().split('\n')
-print(lines)
-reader.close()
+with open('test01.csv', 'r') as reader:
+    data = reader.read()
+    lines = data.strip().split('\n')
+    print(lines)
 ~~~
 ~~~ {.output}
 ['1901,12.3', '1902,45.6', '1903,78.9']
@@ -301,7 +294,7 @@ else:
 >
 > CSV Files need to be separated into:
 >
-> 1.  records (fields) then rows(lines)
-> 2.  rows(lines) then records (fields)
-> 3.  newline characters
-> 4.  commas and other characters
+> 1.  Records (fields) then rows(lines).
+> 2.  Rows(lines) then records (fields).
+> 3.  Newline characters.
+> 4.  Commas and other characters.

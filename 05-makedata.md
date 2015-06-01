@@ -8,10 +8,8 @@ minutes: 15
 >
 > *   Write Python programs that share static data sets.
 
-In our [previous lesson](01-getdata.html),
-we built functions called `get_annual_mean_temp_by_country` and `diff_records`
-to download temperature data for different countries and find annual differences.
-The next step is to share our findings with the world by making publishing the data sets we generate.
+We now have functions to download temperature data for different countries and find annual differences.
+The next step is to share our findings with the world by publishing the data sets we generate.
 To do this, we have to answer three questions:
 
 *   How are we going to store the data?
@@ -30,6 +28,12 @@ def save_records(filename, records):
         writer = csv.writer(raw)
         writer.writerows(records)
 ~~~
+
+> ## Lessons Learned {.callout}
+>
+> We use the `csv` library to write data
+> for the same reason we use it to read:
+> it correctly handles special cases (such as text containing commas).
 
 Let's test it:
 
@@ -54,24 +58,28 @@ But where on the server, and what should we call it?
 
 The answer to those questions depends on how the server is set up.
 On many multi-user Linux machines,
-users can create a directory called something like `public_html` under their home directory,
-and the web server will search in those directories.
+users can create a directory called like `public_html` under their home directory,
+and the web server will automatically search in those directories.
 For example,
 if Nelle has a file called `thesis.pdf` in her `public_html` directory,
-the web server will find it when it gets the URL `http://the.server.name/u/nelle/thesis.pdf`.
-The specifics differ from one machine to the next, but the mechanism stays the same.
+the web server will find it when it gets the URL `http://the.server.name/~nelle/thesis.pdf`.
+(The tilde `~` in front of Nelle's name is what tells the web server
+to look in Nelle's `public_html` directory.)
+The specifics differ from one machine to the next,
+but the basic idea stays the same.
 
 As for what we should call it, here we return to the key idea in REST:
 every data set should be identified by a "guessable" URL.
-In our case we'll use the name `left-right.csv`,
-where `left` and `right` are the three-letter codes of the countries whose mean annual temperatures we are differencing.
+In our case we'll use a name  like `left-right.csv`,
+where `left` and `right` are the three-letter codes of the countries whose temperatures we are differencing.
 We can then tell people that if they want to compare Australia and Brazil,
-they should look for `http://the.server.name/u/nelle/AUS-BRA.csv`.
+they should look for `http://the.server.name/~nelle/AUS-BRA.csv`.
 (We use upper case to be consistent with the World Bank's API.)
 
 But what's to prevent someone from creating a badly-named (and therefore unfindable) file?
 Someone could, for example, call `save_records('aus+bra.csv', records)`.
-To prevent this (or at least reduce the risk), let's modify `save_records` as follows:
+To reduce the odds of this happening,
+let's modify `save_records` to take country identifiers as parameters:
 
 ~~~ {.python}
 import csv
@@ -91,22 +99,26 @@ save_records('AUS', 'BRA', [[1, 2], [3, 4]])
 ~~~
 
 and then check that the right output file has been created.
-Since we are bound to have the country codes anyway (having used them to look up our data), this is as little extra work as possible.
+We are bound to have the country codes anyway (having used them to look up our data),
+so this should seem natural to our users.
 
 > ## Deciding What to Check {.challenge}
 >
-> Should `save_records` check that every record in its input is the same length?
+> Should `save_records` check that every record in its input has exactly two fields?
 > Why or why not?
+> What about country codes -
+> should it contain a list of those that match actual countries
+> and check that `left` and `right` are in that list?
 
 > ## Setting Up Locally {.challenge}
 >
 > Find out how to publish a file on your department's server.
 
->## Published Data Consistency {.challenge}
+> ## Published Data Consistency {.challenge}
 >
-> It is important for the file names of published data to be consistent because;
->a) Some operating systems (e.g. Windows) treat spaces differently
->b) You may not have access to your department's server to rename them
->c) The cStringIO and csv libraries require it.
->d) the files and data can be processed programmatically.
+> It is important for the file names of published data to be consistent because:
 >
+> 1.  Some operating systems (e.g. Windows) treat spaces differently.
+> 2.  You may not have access to your department's server to rename them.
+> 3.  The `csv` library requires it.
+> 4.  Programs can only process files and data correctly when they are.

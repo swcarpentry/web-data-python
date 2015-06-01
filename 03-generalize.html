@@ -39,15 +39,21 @@
 </ul>
 </div>
 </section>
-<p>Now that we know how to get the data for Canada, let’s create a function that will do the same thing for an arbitrary country. The steps are simple: copy the code we’ve written into a function that takes a 3-letter country code as a parameter, and insert that country code into the URL at the appropriate place:</p>
-<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_annual_mean_temp_by_country(country):
+<p>Now that we know how to get the data for Canada, let’s create a function that will do the same thing for an arbitrary country. The steps are simple:</p>
+<ol style="list-style-type: decimal">
+<li>copy the code we’ve written into a function that takes a 3-letter country code as a parameter,</li>
+<li>insert that country code into the URL at the appropriate place, and</li>
+<li>return the result as a list instead of printing it.</li>
+</ol>
+<p>The resulting function looks like:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> annual_mean_temp(country):
     <span class="co">&#39;&#39;&#39;Get the annual mean temperature for a country given its 3-letter ISO code (such as &quot;CAN&quot;).&#39;&#39;&#39;</span>
     url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/&#39;</span> + country + <span class="st">&#39;.csv&#39;</span>
     response = requests.get(url)
     <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
         <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
     <span class="kw">else</span>:
-        wrapper = csv.reader(response.text.strip().split(os.linesep))
+        wrapper = csv.reader(response.text.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>))
         results = []
         <span class="kw">for</span> record in wrapper:
             <span class="kw">if</span> record[<span class="dv">0</span>] != <span class="st">&#39;year&#39;</span>:
@@ -56,15 +62,16 @@
                 results.append([year, value])
         <span class="kw">return</span> results</code></pre>
 <p>This works:</p>
-<pre class="sourceCode python"><code class="sourceCode python">canada = get_annual_mean_temp_by_country(<span class="st">&#39;CAN&#39;</span>)
-<span class="dt">print</span>(<span class="st">&#39;first five entries for Canada:&#39;</span>, canada[:<span class="dv">5</span>])</code></pre>
-<pre class="output"><code>first five entries for Canada: [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879], [1904, -8.155729293823242], [1905, -7.547311305999756]]</code></pre>
-<p>but there’s a problem. Look what happens when we pass in an invalid country identifier:</p>
-<pre class="sourceCode python"><code class="sourceCode python">latveria = get_annual_mean_temp_by_country(<span class="st">&#39;LTV&#39;</span>)
-<span class="dt">print</span> <span class="st">&#39;first five entries for Latveria:&#39;</span>, latveria[:<span class="dv">5</span>]</code></pre>
-<pre class="output"><code>first five entries for Latveria: []</code></pre>
-<p>Latveria doesn’t exist, so why is our function returning an empty list rather than printing an error message? The non-appearance of an error message must mean that the response code was 200; if so, we would have gone into the <code>else</code> branch, assigned an empty list to <code>results</code>, and then… hm… All right, if the response code was 200 and there was no data, that would explain what we’re seeing. Let’s check:</p>
-<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_annual_mean_temp_by_country(country):
+<pre class="sourceCode python"><code class="sourceCode python">canada = annual_mean_temp(<span class="st">&#39;CAN&#39;</span>)
+<span class="dt">print</span>(<span class="st">&#39;first three entries for Canada:&#39;</span>, canada[:<span class="dv">3</span>])</code></pre>
+<pre class="output"><code>first three entries for Canada: [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879]]</code></pre>
+<p>However, there’s a problem. Look what happens when we pass in an invalid country identifier:</p>
+<pre class="sourceCode python"><code class="sourceCode python">latveria = annual_mean_temp(<span class="st">&#39;LTV&#39;</span>)
+<span class="dt">print</span> <span class="st">&#39;first three entries for Latveria:&#39;</span>, latveria[:<span class="dv">3</span>]</code></pre>
+<pre class="output"><code>first three entries for Latveria: []</code></pre>
+<p>Latveria doesn’t exist, so why is our function returning an empty list rather than printing an error message? The non-appearance of an error message must mean that the response code was 200; if it was anything else, we would have gone into the <code>if</code> branch, printed a message, and returned <code>None</code> (which is what functions do when they’re not told to return anything specific).</p>
+<p>So if the response code was 200 and there was no data, that would explain what we’re seeing. Let’s check:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> annual_mean_temp(country):
     <span class="co">&#39;&#39;&#39;Get the annual mean temperature for a country given its 3-letter ISO code (such as &quot;CAN&quot;).&#39;&#39;&#39;</span>
     url = <span class="st">&#39;http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/&#39;</span> + country + <span class="st">&#39;.csv&#39;</span>
     <span class="dt">print</span>(<span class="st">&#39;url used is&#39;</span>, url)
@@ -74,7 +81,7 @@
     <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
         <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
     <span class="kw">else</span>:
-        wrapper = csv.reader(response.text.strip().split(os.linesep))
+        wrapper = csv.reader(response.text.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>))
         results = []
         <span class="kw">for</span> record in wrapper:
             <span class="kw">if</span> record[<span class="dv">0</span>] != <span class="st">&#39;year&#39;</span>:
@@ -83,14 +90,14 @@
                 results.append([year, value])
         <span class="kw">return</span> results
 
-latveria = get_annual_mean_temp_by_country(<span class="st">&#39;LTV&#39;</span>)
+latveria = annual_mean_temp(<span class="st">&#39;LTV&#39;</span>)
 <span class="dt">print</span>(<span class="st">&#39;number of records for Latveria:&#39;</span>, <span class="dt">len</span>(latveria))</code></pre>
 <pre class="output"><code>url used is http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/LTV.csv
 response code: 200
 length of data: 0
 number of records for Latveria: 0</code></pre>
-<p>Great: after a bit more experimenting, we discover that the site <em>always</em> returns a 200 status code. The only way to tell if there’s real data or not will be to check if <code>response.text</code> is empty. Here’s the updated function:</p>
-<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_annual_mean_temp_by_country(country):
+<p>In other words, the World Bank is always saying, “I was able to answer your query,” even when it actually can’t. After a bit more experimenting, we discover that the site <em>always</em> returns a 200 status code. The only way to tell if there’s real data or not is to check if <code>response.text</code> is empty. Here’s the updated function:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> annual_mean_temp(country):
     <span class="co">&#39;&#39;&#39;</span>
 <span class="co">    Get the annual mean temperature for a country given its 3-letter ISO code (such as &quot;CAN&quot;).</span>
 <span class="co">    Returns an empty list if the country code is invalid.</span>
@@ -99,7 +106,7 @@ number of records for Latveria: 0</code></pre>
     response = requests.get(url)
     results = []
     <span class="kw">if</span> <span class="dt">len</span>(response.text) &gt; <span class="dv">0</span>:
-        wrapper = csv.reader(response.text.strip().split(os.linesep))
+        wrapper = csv.reader(response.text.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>))
         <span class="kw">for</span> record in wrapper:
             <span class="kw">if</span> record[<span class="dv">0</span>] != <span class="st">&#39;year&#39;</span>:
                 year = <span class="dt">int</span>(record[<span class="dv">0</span>])
@@ -107,11 +114,11 @@ number of records for Latveria: 0</code></pre>
                 results.append([year, value])
     <span class="kw">return</span> results
 
-<span class="dt">print</span>(<span class="st">&#39;number of records for Canada:&#39;</span>, <span class="dt">len</span>(get_annual_mean_temp_by_country(<span class="st">&#39;CAN&#39;</span>)))
-<span class="dt">print</span>(<span class="st">&#39;number of records for Latveria:&#39;</span>, <span class="dt">len</span>(get_annual_mean_temp_by_country(<span class="st">&#39;LTV&#39;</span>)))</code></pre>
+<span class="dt">print</span>(<span class="st">&#39;number of records for Canada:&#39;</span>, <span class="dt">len</span>(annual_mean_temp(<span class="st">&#39;CAN&#39;</span>)))
+<span class="dt">print</span>(<span class="st">&#39;number of records for Latveria:&#39;</span>, <span class="dt">len</span>(annual_mean_temp(<span class="st">&#39;LTV&#39;</span>)))</code></pre>
 <pre class="output"><code>number of records for Canada: 109
 number of records for Latveria: 0</code></pre>
-<p>Now that we can get surface temperatures for different countries, we can write a function to compare those values. (We’ll jump straight into writing a function because by now it’s clear that’s what we’re eventually going to do anyway.) Here’s our first cut:</p>
+<p>Now that we can get surface temperatures for different countries, we can write a function to compare those values. (We’ll jump straight into writing a function because by now it’s clear that’s what we’re eventually going to do anyway.) Here’s our first attempt:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> diff_records(left, right):
     <span class="co">&#39;&#39;&#39;Given lists of [year, value] pairs, return list of [year, difference] pairs.&#39;&#39;&#39;</span>
     num_years = <span class="dt">len</span>(left)
@@ -232,20 +239,26 @@ AssertionError                            Traceback (most recent call last)
 
 AssertionError: Inputs have different lengths. right is shorter</code></pre>
 <p>Excellent: the assertions we’ve added will now alert us if we try to work with badly-formatted or inconsistent data.</p>
-<aside class="callout panel panel-info">
+<section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pushpin"></span>There’s a Better Way to Do It</h2>
+<h2><span class="glyphicon glyphicon-pencil"></span>Error Handling</h2>
 </div>
 <div class="panel-body">
-<p>We had to run each test in a cell of its own because Python stops executing the code in a cell as soon as an assertion fails, and we want to make sure all three tests actually run. A <a href="reference.html#unit-testing-tool">unit testing tool</a> would handle this for us, and do much else as well.</p>
+<p>Python scripts should have error handling code because:</p>
+<ol style="list-style-type: decimal">
+<li>Python is an inherently unreliable language.</li>
+<li>Functions can return errors.</li>
+<li>One should never trust the data provided is what is expected.</li>
+<li>A python script would stop on an error, so the task wouldn’t be accomplished.</li>
+</ol>
 </div>
-</aside>
+</section>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>When to Complain?</h2>
 </div>
 <div class="panel-body">
-<p>Should <code>get_annual_mean_temp_by_country</code> print an error mesage when it doesn’t get data? Should it use an assertion to fail if it doesn’t get data? Why or why not?</p>
+<p>We have actually just committed the same mistake as the World Bank: if someone gives <code>annual_mean_temp</code> an invalid country identifier, it doesn’t report an error, but instead returns an empty list, so the caller has to somehow know to look for that. Should it use an assertion to fail if it doesn’t get data? Why or why not?</p>
 </div>
 </section>
 <section class="challenge panel panel-success">
@@ -261,14 +274,6 @@ AssertionError: Inputs have different lengths. right is shorter</code></pre>
 1 = b
 2 = c</code></pre>
 <p>Rewrite <code>diff_records</code> to use <code>enumerate</code>.</p>
-</div>
-</section>
-<section class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Error Handling</h2>
-</div>
-<div class="panel-body">
-<p>Python scripts should have error handling code because: a) Python is an inherently unreliable language b) Functions can return errors c) One should never trust the data provided is what is expected d) A python script would stop on an error, so the task wouldn’t be accomplished</p>
 </div>
 </section>
         </div>

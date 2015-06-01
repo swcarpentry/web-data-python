@@ -38,13 +38,13 @@
 </ul>
 </div>
 </section>
-<p>The final step in this lesson is to make the data we generate findable. It’s not enough to tell people what the rule is for creating filenames, since that doesn’t tell them what data sets we’ve actually generated. Instead, we need to create an <a href="reference.html#index">index</a> to tell them what files exist. For reasons we will see in a moment, that index should also tell them when each data set was generated.</p>
+<p>It’s not enough to tell people what the rule is for creating filenames, since that doesn’t tell them what data sets we’ve actually generated. The final step in this lesson is therefoore to make the data we generate findable by creating an <a href="reference.html#index">index</a> to tell people what files exist.</p>
 <p>Here’s the format we will use:</p>
 <pre><code>2014-05-26,FRA,TCD,FRA-TCD.csv
 2014-05-27,AUS,BRA,AUS-BRA.csv
 2014-05-27,AUS,CAN,AUS-CAN.csv
 2014-05-28,BRA,CAN,BRA-CAN.csv</code></pre>
-<p>The four columns in this file are self-explanatory, but why do we bother to include the filename? After all, we can re-generate it easily given the two country codes. The answer is that while <em>we</em> know the rule for generating filenames, other people’s programs shouldn’t have to. Explicit is better than implicit.</p>
+<p>The columns are the date the data set was generated, the identifiers of the two countries being compared, and the name of the data file. We include the date to make it easy for people to see what’s been updated when, but why do we bother to include the filename? After all, we can re-generate it easily given the two country codes. The answer is that while <em>we</em> know the rule for generating filenames, other people’s programs shouldn’t have to.</p>
 <p>Here’s a function that updates the index file every time we generate a new data file:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> time
 
@@ -88,12 +88,17 @@
         reader = csv.reader(raw)
         filenames = []
         <span class="kw">for</span> record in reader:
-            <span class="kw">if</span> (after &lt;= record[<span class="dv">0</span>]) and (record[<span class="dv">1</span>] == country or record[<span class="dv">2</span>] == country):
+            <span class="kw">if</span> (after &lt;= record[<span class="dv">0</span>]) and (country in (record[<span class="dv">1</span>], record[<span class="dv">2</span>])):
                 filenames.append(record[<span class="dv">3</span>])
     <span class="kw">return</span> filenames
 
 <span class="dt">print</span> what_is_available(<span class="st">&#39;data/index.csv&#39;</span>, <span class="st">&#39;BRA&#39;</span>, <span class="st">&#39;2014-05-27&#39;</span>)</code></pre>
 <pre class="output"><code>[&#39;AUS-BRA.csv&#39;, &#39;BRA-CAN.csv&#39;]</code></pre>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pushpin"></span>New Kinds of Science</h2>
+</div>
+<div class="panel-body">
 <p>This may not seem like a breakthrough, but it is actually an example of how the web helps researchers do new kinds of science. With a little bit more work, we could create a file on <em>our</em> machine to record when we last ran <code>what_is_available</code> for each of several different sites that are producing data. Each time we run it, our program would:</p>
 <ul>
 <li>read our local “what to check” file;</li>
@@ -101,8 +106,31 @@
 <li>download and process that data; and</li>
 <li>present us with a summary of the results.</li>
 </ul>
-<p>This is exactly how blogs work. Every blog reader keeps a list of blog URLs that it’s supposed to check. When it is run, it goes to each of those sites and asks them for their index file (which is typically called something like <code>feed.xml</code>). It then checks the articles listed in that index against its local record of what has already been seen, then downloads any articles that are new.</p>
-<p>By automating this process, blogging tools help us focus attention on things that are actually worth looking at.</p>
+<p>This is exactly how blogs work. Every blog reader keeps a list of blog URLs that it’s supposed to check. When it is run, it goes to each of those sites and asks them for their index file (which is typically called something like <code>feed.xml</code>). It then checks the articles listed in that index against its local record of what has already been seen, then downloads any articles that are new. By automating this process, blogging tools help us focus attention on things that are actually worth looking at.</p>
+</div>
+</aside>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Indexing</h2>
+</div>
+<div class="panel-body">
+<p>We should always create an index for generated data because:</p>
+<ol style="list-style-type: decimal">
+<li>It can be checked in an automated way for changes.</li>
+<li>The web server will not display the directory without an index.</li>
+<li>REST APIs require an index to function.</li>
+<li>It is too complicated for a program to calculate itself.</li>
+</ol>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Metadata for Metadata</h2>
+</div>
+<div class="panel-body">
+<p>Should the first line of the index file be a header giving the names of the columns? Why or why not?</p>
+</div>
+</section>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>To Automate or Not</h2>
@@ -117,22 +145,6 @@
 </div>
 <div class="panel-body">
 <p><code>update_index</code> and <code>save_records</code> both construct the name of the data file. Refactor them to remove this redundancy.</p>
-</div>
-</section>
-<section class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Generating a Local Index (Large)</h2>
-</div>
-<div class="panel-body">
-<p>Generate a local index file to show what data sets were created when.</p>
-</div>
-</section>
-<section class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Indexing</h2>
-</div>
-<div class="panel-body">
-<p>Index’s are important for generated data because: a) They can be checked in an automated way for changes b) The web server will not display the directory without an index c) REST API’s require an index to function d) its too complicated for a program to calculate itself.</p>
 </div>
 </section>
         </div>

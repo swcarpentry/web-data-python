@@ -50,39 +50,35 @@
 1902,45.6
 1903,78.9</code></pre>
 <p>It’s easy to read this file line by line and (for example) report the length of each line:</p>
-<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
-<span class="kw">for</span> line in reader:
-    <span class="dt">print</span>(<span class="dt">len</span>(line))
-reader.close()</code></pre>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">with</span> <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="ch">as</span> reader:
+    <span class="kw">for</span> line in reader:
+        <span class="dt">print</span>(<span class="dt">len</span>(line))</code></pre>
 <pre class="output"><code>10
 10
 10</code></pre>
 <p>We can also split each line on commas to turn each one into a list of string fragments:</p>
-<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
-<span class="kw">for</span> line in reader:
-    fields = line.split(<span class="st">&#39;,&#39;</span>)
-    <span class="dt">print</span>(fields)
-reader.close()</code></pre>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">with</span> <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="ch">as</span> reader:
+    <span class="kw">for</span> line in reader:
+        fields = line.split(<span class="st">&#39;,&#39;</span>)
+        <span class="dt">print</span>(fields)</code></pre>
 <pre class="output"><code>[&#39;1901&#39;, &#39;12.3\n&#39;]
 [&#39;1902&#39;, &#39;45.6\n&#39;]
 [&#39;1903&#39;, &#39;78.9\n&#39;]</code></pre>
 <p>The dates are correct, but the values all end with <code>\n</code>. This is an <a href="reference.html#escape-sequence">escape sequence</a> that represents the newline character at the end of each line. To get rid of it, we should strip leading and trailing whitespace from each line before splitting it on commas:</p>
-<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
-<span class="kw">for</span> line in reader:
-    fields = line.strip().split(<span class="st">&#39;,&#39;</span>)
-    <span class="dt">print</span>(fields)
-reader.close()</code></pre>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">with</span> <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="ch">as</span> reader:
+    <span class="kw">for</span> line in reader:
+        fields = line.strip().split(<span class="st">&#39;,&#39;</span>)
+        <span class="dt">print</span>(fields)</code></pre>
 <pre class="output"><code>[&#39;1901&#39;, &#39;12.3&#39;]
 [&#39;1902&#39;, &#39;45.6&#39;]
 [&#39;1903&#39;, &#39;78.9&#39;]</code></pre>
 <p>Now let’s have a look at how we could parse the data using standard Python libraries instead. The library we’ll use is called <code>csv</code>. It doesn’t read data itself: instead, it takes the lines read by something else and turns them into lists of values by splitting on commas. Here’s one way to use it:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> csv
 
-raw = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
-cooked = csv.reader(raw)
-<span class="kw">for</span> record in cooked:
-    <span class="dt">print</span>(record)
-raw.close()</code></pre>
+<span class="kw">with</span> <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="ch">as</span> raw:
+    cooked = csv.reader(raw)
+    <span class="kw">for</span> record in cooked:
+        <span class="dt">print</span>(record)</code></pre>
 <pre class="ouptut"><code>[&#39;1901&#39;, &#39;12.3&#39;]
 [&#39;1902&#39;, &#39;45.6&#39;]
 [&#39;1903&#39;, &#39;78.9&#39;]</code></pre>
@@ -90,9 +86,8 @@ raw.close()</code></pre>
 <p>We can equally well give a <code>csv.reader</code> a list of strings rather than a file:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> csv
 
-raw = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
-lines = raw.readlines()
-raw.close()
+<span class="kw">with</span> <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="ch">as</span> raw:
+    lines = raw.readlines()
 cooked = csv.reader(lines)
 <span class="kw">for</span> record in cooked:
     <span class="dt">print</span>(record)</code></pre>
@@ -119,22 +114,20 @@ cooked = csv.reader(lines)
 1903,-7.910782814025879
 ...</code></pre>
 <p>We have to break this into lines before giving it to <code>csv.reader</code>, and we can do that by splitting the string on the same <code>\n</code> escape sequence we encountered a few moments ago. To see how this works, let’s read <code>test01.csv</code> into memory and split it into pieces:</p>
-<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
-data = reader.read()
-lines = data.split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)
-<span class="dt">print</span>(lines)
-reader.close()</code></pre>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">with</span> <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="ch">as</span> reader:
+    data = reader.read()
+    lines = data.split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)
+    <span class="dt">print</span>(lines)</code></pre>
 <pre class="output"><code>[&#39;1901,12.3&#39;, &#39;1902,45.6&#39;, &#39;1903,78.9&#39;, &#39;&#39;]</code></pre>
 <p>That’s <em>almost</em> right, but why is there an empty string at the end of the list? The answer is that the last line of the file ends in a newline, so Python does the same thing it does in the example below:</p>
 <pre class="sourceCode python"><code class="sourceCode python">fields = <span class="st">&#39;a-b-&#39;</span>.split(<span class="st">&#39;-&#39;</span>)
 <span class="dt">print</span>(fields)</code></pre>
 <pre class="output"><code>[&#39;a&#39;, &#39;b&#39;, &#39;&#39;]</code></pre>
 <p>The solution once again is to strip leading and trailing whitespace before splitting:</p>
-<pre class="sourceCode python"><code class="sourceCode python">reader = <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>)
-data = reader.read()
-lines = data.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)
-<span class="dt">print</span>(lines)
-reader.close()</code></pre>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">with</span> <span class="dt">open</span>(<span class="st">&#39;test01.csv&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="ch">as</span> reader:
+    data = reader.read()
+    lines = data.strip().split(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)
+    <span class="dt">print</span>(lines)</code></pre>
 <pre class="output"><code>[&#39;1901,12.3&#39;, &#39;1902,45.6&#39;, &#39;1903,78.9&#39;]</code></pre>
 <p>Putting this all together, we can get data for Canada like this:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> requests
@@ -204,10 +197,10 @@ response = requests.get(url)
 <div class="panel-body">
 <p>CSV Files need to be separated into:</p>
 <ol style="list-style-type: decimal">
-<li>records (fields) then rows(lines)</li>
-<li>rows(lines) then records (fields)</li>
-<li>newline characters</li>
-<li>commas and other characters</li>
+<li>Records (fields) then rows(lines).</li>
+<li>Rows(lines) then records (fields).</li>
+<li>Newline characters.</li>
+<li>Commas and other characters.</li>
 </ol>
 </div>
 </section>
