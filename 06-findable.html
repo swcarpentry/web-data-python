@@ -28,7 +28,7 @@
         <div class="col-md-10 col-md-offset-1">
           <h1 class="title">Working With Data on the Web</h1>
           <h2 class="subtitle">Making Data Findable</h2>
-<div id="learning-objectives" class="objectives panel panel-warning">
+<section class="objectives panel panel-warning">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
@@ -37,7 +37,7 @@
 <li>Make data sets more useful by providing metadata.</li>
 </ul>
 </div>
-</div>
+</section>
 <p>The final step in this lesson is to make the data we generate findable. It’s not enough to tell people what the rule is for creating filenames, since that doesn’t tell them what data sets we’ve actually generated. Instead, we need to create an <a href="reference.html#index">index</a> to tell them what files exist. For reasons we will see in a moment, that index should also tell them when each data set was generated.</p>
 <p>Here’s the format we will use:</p>
 <pre><code>2014-05-26,FRA,TCD,FRA-TCD.csv
@@ -103,30 +103,38 @@
 </ul>
 <p>This is exactly how blogs work. Every blog reader keeps a list of blog URLs that it’s supposed to check. When it is run, it goes to each of those sites and asks them for their index file (which is typically called something like <code>feed.xml</code>). It then checks the articles listed in that index against its local record of what has already been seen, then downloads any articles that are new.</p>
 <p>By automating this process, blogging tools help us focus attention on things that are actually worth looking at.</p>
-<div id="to-automate-or-not" class="challenge panel panel-success">
+<section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>To Automate or Not</h2>
 </div>
 <div class="panel-body">
 <p>Should <code>update_index</code> be called inside <code>save_records</code> so that the index is automatically updated every time a new data set is generated? Why or why not?</p>
 </div>
-</div>
-<div id="removing-redundant-redundancy" class="challenge panel panel-success">
+</section>
+<section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Removing Redundant Redundancy</h2>
 </div>
 <div class="panel-body">
 <p><code>update_index</code> and <code>save_records</code> both construct the name of the data file. Refactor them to remove this redundancy.</p>
 </div>
-</div>
-<div id="generating-a-local-index-large" class="challenge panel panel-success">
+</section>
+<section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Generating a Local Index (Large)</h2>
 </div>
 <div class="panel-body">
 <p>Generate a local index file to show what data sets were created when.</p>
 </div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Indexing</h2>
 </div>
+<div class="panel-body">
+<p>Index’s are important for generated data because: a) They can be checked in an automated way for changes b) The web server will not display the directory without an index c) REST API’s require an index to function d) its too complicated for a program to calculate itself.</p>
+</div>
+</section>
         </div>
       </div>
       </article>

@@ -28,7 +28,7 @@
         <div class="col-md-10 col-md-offset-1">
           <h1 class="title">Working With Data on the Web</h1>
           <h2 class="subtitle">Publishing Data</h2>
-<div id="learning-objectives" class="objectives panel panel-warning">
+<section class="objectives panel panel-warning">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
@@ -37,7 +37,7 @@
 <li>Write Python programs that share static data sets.</li>
 </ul>
 </div>
-</div>
+</section>
 <p>In our <a href="01-getdata.html">previous lesson</a>, we built functions called <code>get_annual_mean_temp_by_country</code> and <code>diff_records</code> to download temperature data for different countries and find annual differences. The next step is to share our findings with the world by making publishing the data sets we generate. To do this, we have to answer three questions:</p>
 <ul>
 <li>How are we going to store the data?</li>
@@ -73,30 +73,30 @@
 <p>We can now call it like this:</p>
 <pre class="sourceCode python"><code class="sourceCode python">save_records(<span class="st">&#39;AUS&#39;</span>, <span class="st">&#39;BRA&#39;</span>, [[<span class="dv">1</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">4</span>]])</code></pre>
 <p>and then check that the right output file has been created. Since we are bound to have the country codes anyway (having used them to look up our data), this is as little extra work as possible.</p>
-<div id="testing-output" class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Testing Output</h2>
-</div>
-<div class="panel-body">
-<p>Modify <code>save_records</code> so that it can be tested using <code>cStringIO</code>.</p>
-</div>
-</div>
-<div id="deciding-what-to-check" class="challenge panel panel-success">
+<section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Deciding What to Check</h2>
 </div>
 <div class="panel-body">
 <p>Should <code>save_records</code> check that every record in its input is the same length? Why or why not?</p>
 </div>
-</div>
-<div id="setting-up-locally" class="challenge panel panel-success">
+</section>
+<section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Setting Up Locally</h2>
 </div>
 <div class="panel-body">
 <p>Find out how to publish a file on your department’s server.</p>
 </div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Published Data Consistency</h2>
 </div>
+<div class="panel-body">
+<p>It is important for the file names of published data to be consistent because; a) Some operating systems (e.g. Windows) treat spaces differently b) You may not have access to your department’s server to rename them c) The cStringIO and csv libraries require it. d) the files and data can be processed programmatically.</p>
+</div>
+</section>
         </div>
       </div>
       </article>

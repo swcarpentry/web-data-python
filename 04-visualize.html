@@ -28,7 +28,7 @@
         <div class="col-md-10 col-md-offset-1">
           <h1 class="title">Working With Data on the Web</h1>
           <h2 class="subtitle">Visualization</h2>
-<div id="learning-objectives" class="objectives panel panel-warning">
+<section class="objectives panel panel-warning">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
@@ -37,7 +37,7 @@
 <li>Construct a simple visualization.</li>
 </ul>
 </div>
-</div>
+</section>
 <p>We now have all the tools we need to visualize the temperature differences between countries:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">from</span> matplotlib <span class="ch">import</span> pyplot <span class="ch">as</span> plt
 
@@ -52,21 +52,29 @@ plt.show()</code></pre>
 <p>That’s not what we want: the library has interpreted our list of pairs as two corresponding curves rather than as the (x,y) coordinates for one curve. Let’s convert our list of (year, difference) pairs into a NumPy array:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> numpy <span class="ch">as</span> np
 d = np.array(diff)</code></pre>
-<p>and then plot the first column against the second:</p>
+<p>and then plot the first column against the second. Note that, like python arrays the counting starts at 0, not one:</p>
 <pre class="sourceCode python"><code class="sourceCode python">plt.plot(d[:, <span class="dv">0</span>], d[:, <span class="dv">1</span>])
 plt.show()</code></pre>
 <div class="figure">
 <img src="fig/plot-02.png" alt="Second Plot" /><p class="caption">Second Plot</p>
 </div>
 <p>It looks like the difference is slowly decreasing, but the signal is very noisy. At this point, if we wanted a real answer, it would be time to break out a curve-fitting library.</p>
-<div id="changing-visualizations" class="challenge panel panel-success">
+<section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Changing Visualizations</h2>
 </div>
 <div class="panel-body">
 <p>Modify the plotting commands so that the Y-axis scale runs from 0 to 32. Do you think this gives you a more accurate or less accurate view of this data?</p>
 </div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Visualisation Libraries</h2>
 </div>
+<div class="panel-body">
+<p>When graphing using python; a) only the matplotlib library is available b) matplotlib can only be used with the numpy library c) it is important to get your data into the correct format for the graph required. d) line charts are the best way to illustrate data</p>
+</div>
+</section>
         </div>
       </div>
       </article>

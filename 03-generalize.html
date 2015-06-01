@@ -28,7 +28,7 @@
         <div class="col-md-10 col-md-offset-1">
           <h1 class="title">Working With Data on the Web</h1>
           <h2 class="subtitle">Generalizing and Handling Errors</h2>
-<div id="learning-objectives" class="objectives panel panel-warning">
+<section class="objectives panel panel-warning">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
@@ -38,7 +38,7 @@
 <li>Make a function more robust by explicitly handling errors.</li>
 </ul>
 </div>
-</div>
+</section>
 <p>Now that we know how to get the data for Canada, let’s create a function that will do the same thing for an arbitrary country. The steps are simple: copy the code we’ve written into a function that takes a 3-letter country code as a parameter, and insert that country code into the URL at the appropriate place:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_annual_mean_temp_by_country(country):
     <span class="co">&#39;&#39;&#39;Get the annual mean temperature for a country given its 3-letter ISO code (such as &quot;CAN&quot;).&#39;&#39;&#39;</span>
@@ -47,8 +47,7 @@
     <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
         <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
     <span class="kw">else</span>:
-        reader = io.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         results = []
         <span class="kw">for</span> record in wrapper:
             <span class="kw">if</span> record[<span class="dv">0</span>] != <span class="st">&#39;year&#39;</span>:
@@ -75,8 +74,7 @@
     <span class="kw">if</span> response.status_code != <span class="dv">200</span>:
         <span class="dt">print</span>(<span class="st">&#39;Failed to get data:&#39;</span>, response.status_code)
     <span class="kw">else</span>:
-        reader = io.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         results = []
         <span class="kw">for</span> record in wrapper:
             <span class="kw">if</span> record[<span class="dv">0</span>] != <span class="st">&#39;year&#39;</span>:
@@ -101,8 +99,7 @@ number of records for Latveria: 0</code></pre>
     response = requests.get(url)
     results = []
     <span class="kw">if</span> <span class="dt">len</span>(response.text) &gt; <span class="dv">0</span>:
-        reader = io.StringIO(response.text)
-        wrapper = csv.reader(reader)
+        wrapper = csv.reader(response.text.strip().split(os.linesep))
         <span class="kw">for</span> record in wrapper:
             <span class="kw">if</span> record[<span class="dv">0</span>] != <span class="st">&#39;year&#39;</span>:
                 year = <span class="dt">int</span>(record[<span class="dv">0</span>])
@@ -235,23 +232,23 @@ AssertionError                            Traceback (most recent call last)
 
 AssertionError: Inputs have different lengths. right is shorter</code></pre>
 <p>Excellent: the assertions we’ve added will now alert us if we try to work with badly-formatted or inconsistent data.</p>
-<div id="theres-a-better-way-to-do-it" class="callout panel panel-info">
+<aside class="callout panel panel-info">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pushpin"></span>There’s a Better Way to Do It</h2>
 </div>
 <div class="panel-body">
 <p>We had to run each test in a cell of its own because Python stops executing the code in a cell as soon as an assertion fails, and we want to make sure all three tests actually run. A <a href="reference.html#unit-testing-tool">unit testing tool</a> would handle this for us, and do much else as well.</p>
 </div>
-</div>
-<div id="when-to-complain" class="challenge panel panel-success">
+</aside>
+<section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>When to Complain?</h2>
 </div>
 <div class="panel-body">
 <p>Should <code>get_annual_mean_temp_by_country</code> print an error mesage when it doesn’t get data? Should it use an assertion to fail if it doesn’t get data? Why or why not?</p>
 </div>
-</div>
-<div id="enumerating" class="challenge panel panel-success">
+</section>
+<section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Enumerating</h2>
 </div>
@@ -265,7 +262,15 @@ AssertionError: Inputs have different lengths. right is shorter</code></pre>
 2 = c</code></pre>
 <p>Rewrite <code>diff_records</code> to use <code>enumerate</code>.</p>
 </div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Error Handling</h2>
 </div>
+<div class="panel-body">
+<p>Python scripts should have error handling code because: a) Python is an inherently unreliable language b) Functions can return errors c) One should never trust the data provided is what is expected d) A python script would stop on an error, so the task wouldn’t be accomplished</p>
+</div>
+</section>
         </div>
       </div>
       </article>
