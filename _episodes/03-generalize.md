@@ -1,11 +1,15 @@
 ---
 title: "Generalizing and Handling Errors"
-minutes: 15
+teaching: 15
+exercises: 0
+questions:
+- "FIXME"
+objectives:
+- "Turn a script into a function."
+- "Make a function more robust by explicitly handling errors."
+keypoints:
+- "FIXME"
 ---
-> ## Learning Objectives {.objectives}
->
-> *   Turn a script into a function.
-> *   Make a function more robust by explicitly handling errors.
 
 Now that we know how to get the data for Canada,
 let's create a function that will do the same thing for an arbitrary country.
@@ -17,7 +21,7 @@ The steps are simple:
 
 The resulting function looks like:
 
-~~~ {.python}
+~~~
 def annual_mean_temp(country):
     '''Get the annual mean temperature for a country given its 3-letter ISO code (such as "CAN").'''
     url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/' + country + '.csv'
@@ -34,28 +38,33 @@ def annual_mean_temp(country):
                 results.append([year, value])
         return results
 ~~~
+{: .python}
 
 This works:
 
-~~~ {.python}
+~~~
 canada = annual_mean_temp('CAN')
 print('first three entries for Canada:', canada[:3])
 ~~~
-~~~ {.output}
+{: .python}
+~~~
 first three entries for Canada: [[1901, -7.67241907119751], [1902, -7.862711429595947], [1903, -7.910782814025879]]
 ~~~
+{: .output}
 
 However,
 there's a problem.
 Look what happens when we pass in an invalid country identifier:
 
-~~~ {.python}
+~~~
 latveria = annual_mean_temp('LTV')
 print 'first three entries for Latveria:', latveria[:3]
 ~~~
-~~~ {.output}
+{: .python}
+~~~
 first three entries for Latveria: []
 ~~~
+{: .output}
 
 Latveria doesn't exist,
 so why is our function returning an empty list rather than printing an error message?
@@ -69,7 +78,7 @@ and returned `None`
 So if the response code was 200 and there was no data, that would explain what we're seeing.
 Let's check:
 
-~~~ {.python}
+~~~
 def annual_mean_temp(country):
     '''Get the annual mean temperature for a country given its 3-letter ISO code (such as "CAN").'''
     url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/' + country + '.csv'
@@ -92,12 +101,14 @@ def annual_mean_temp(country):
 latveria = annual_mean_temp('LTV')
 print('number of records for Latveria:', len(latveria))
 ~~~
-~~~ {.output}
+{: .python}
+~~~
 url used is http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/LTV.csv
 response code: 200
 length of data: 0
 number of records for Latveria: 0
 ~~~
+{: .output}
 
 In other words,
 the World Bank is always saying,
@@ -107,7 +118,7 @@ After a bit more experimenting, we discover that the site *always* returns a 200
 The only way to tell if there's real data or not is to check if `response.text` is empty.
 Here's the updated function:
 
-~~~ {.python}
+~~~
 def annual_mean_temp(country):
     '''
     Get the annual mean temperature for a country given its 3-letter ISO code (such as "CAN").
@@ -128,17 +139,19 @@ def annual_mean_temp(country):
 print('number of records for Canada:', len(annual_mean_temp('CAN')))
 print('number of records for Latveria:', len(annual_mean_temp('LTV')))
 ~~~
-~~~ {.output}
+{: .python}
+~~~
 number of records for Canada: 109
 number of records for Latveria: 0
 ~~~
+{: .output}
 
 Now that we can get surface temperatures for different countries,
 we can write a function to compare those values.
 (We'll jump straight into writing a function because by now it's clear that's what we're eventually going to do anyway.)
 Here's our first attempt:
 
-~~~ {.python}
+~~~
 def diff_records(left, right):
     '''Given lists of [year, value] pairs, return list of [year, difference] pairs.'''
     num_years = len(left)
@@ -150,13 +163,15 @@ def diff_records(left, right):
         results.append([left_year, difference])
     return results
 ~~~
+{: .python}
 
 Here, we're using the number of entries in `left` (which we find with `len(left)`) to control our loop.
 The expression:
 
-~~~ {.python}
+~~~
 for i in range(num_years):
 ~~~
+{: .python}
 
 runs `i` from 0 to `num_years-1`, which corresponds exactly to the legal indices of `left`.
 Inside the loop we unpack the left and right years and values from the list entries,
@@ -165,20 +180,22 @@ which we return at the end.
 
 To see if this function works, we can run a couple of tests on made-up data:
 
-~~~ {.python}
+~~~
 print('one record:', diff_records([[1900, 1.0]],
                                   [[1900, 2.0]]))
 print('two records:', diff_records([[1900, 1.0], [1901, 10.0]],
                                    [[1900, 2.0], [1901, 20.0]]))
 ~~~
-~~~ {.output}
+{: .python}
+~~~
 one record: [[1900, -1.0]]
 two records: [[1900, -1.0], [1901, -10.0]]
 ~~~
+{: .output}
 
 That looks pretty good—but what about these cases?
 
-~~~ {.python}
+~~~
 print('mis-matched years:', diff_records([[1900, 1.0]],
                                          [[1999, 2.0]]))
 print('left is shorter', diff_records([[1900, 1.0]],
@@ -186,7 +203,8 @@ print('left is shorter', diff_records([[1900, 1.0]],
 print('right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
                                        [[1900, 10.0]]))
 ~~~
-~~~ {.error}
+{: .python}
+~~~
 ---------------------------------------------------------------------------
 IndexError                                Traceback (most recent call last)
 <ipython-input-15-7582f56db8bf> in <module>()
@@ -205,6 +223,7 @@ IndexError: list index out of rangemis-matched years: [[1900, -1.0]]
 left is shorter [[1900, -9.0]]
 right is shorter
 ~~~
+{: .error}
 
 The first test gives us an answer even though the years didn't match:
 we get a result, but it's meaningless.
@@ -218,7 +237,7 @@ because they are [silent failures](reference.html#silent-failure):
 the function does the wrong thing, but doesn't indicate that in any way.
 Let's fix that:
 
-~~~ {.python}
+~~~
 def diff_records(left, right):
     '''
     Given lists of [year, value] pairs, return list of [year, difference] pairs.
@@ -237,27 +256,31 @@ def diff_records(left, right):
         results.append([left_year, difference])
     return results
 ~~~
+{: .python}
 
 Do our "good" tests pass?
 
-~~~ {.python}
+~~~
 print('one record:', diff_records([[1900, 1.0]],
                                   [[1900, 2.0]]))
 print('two records:', diff_records([[1900, 1.0], [1901, 10.0]],
                                    [[1900, 2.0], [1901, 20.0]]))
 ~~~
-~~~ {.output}
+{: .python}
+~~~
 one record: [[1900, -1.0]]
 two records: [[1900, -1.0], [1901, -10.0]]
 ~~~
+{: .output}
 
 What about our the three tests that we now expect to fail?
 
-~~~ {.python}
+~~~
 print('mis-matched years:', diff_records([[1900, 1.0]],
                                          [[1999, 2.0]]))
 ~~~
-~~~ {.error}
+{: .python}
+~~~
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-18-c101917a748e> in <module>()
@@ -273,12 +296,14 @@ AssertionError                            Traceback (most recent call last)
 
 AssertionError: Record 0 is for different years: 1900 vs 1999mis-matched years:
 ~~~
+{: .error}
 
-~~~ {.python}
+~~~
 print('left is shorter', diff_records([[1900, 1.0]],
                                       [[1900, 10.0], [1901, 20.0]]))
 ~~~
-~~~ {.error}
+{: .python}
+~~~
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-19-682d448d921e> in <module>()
@@ -294,11 +319,13 @@ AssertionError                            Traceback (most recent call last)
 
 AssertionError: Inputs have different lengths. left is shorter
 ~~~
-~~~ {.python}
+{: .error}
+~~~
 print('right is shorter', diff_records([[1900, 1.0], [1901, 2.0]],
                                        [[1900, 10.0]]))
 ~~~
-~~~ {.error}
+{: .python}
+~~~
 ---------------------------------------------------------------------------
 AssertionError                            Traceback (most recent call last)
 <ipython-input-20-a475e608dd70> in <module>()
@@ -314,10 +341,11 @@ AssertionError                            Traceback (most recent call last)
 
 AssertionError: Inputs have different lengths. right is shorter
 ~~~
+{: .error}
 
 Excellent: the assertions we've added will now alert us if we try to work with badly-formatted or inconsistent data.
 
->## Error Handling {.challenge}
+> ## Error Handling
 >
 > Python scripts should have error handling code because:
 >
@@ -325,8 +353,9 @@ Excellent: the assertions we've added will now alert us if we try to work with b
 > 2.  Functions can return errors.
 > 3.  One should never trust the data provided is what is expected.
 > 4.  A python script would stop on an error, so the task wouldn't be accomplished.
+{: .challenge}
 
-> ## When to Complain? {.challenge}
+> ## When to Complain?
 >
 > We have actually just committed the same mistake as the World Bank:
 > if someone gives `annual_mean_temp` an invalid country identifier,
@@ -335,23 +364,27 @@ Excellent: the assertions we've added will now alert us if we try to work with b
 > so the caller has to somehow know to look for that.
 > Should it use an assertion to fail if it doesn't get data?
 > Why or why not?
+{: .challenge}
 
-> ## Enumerating {.challenge}
+> ## Enumerating
 >
 > Python includes a function called `enumerate` that's often used in `for` loops.
 > This loop:
 >
-> ~~~ {.python}
+> ~~~
 > for (i, c) in enumerate('abc'):
 >     print(i, '=', c)
 > ~~~
+> {: .python}
 >
 > prints:
 >
-> ~~~ {.output}
+> ~~~
 > 0 = a
 > 1 = b
 > 2 = c
 > ~~~
+> {: .output}
 >
 > Rewrite `diff_records` to use `enumerate`.
+{: .challenge}

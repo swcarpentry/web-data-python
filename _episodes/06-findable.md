@@ -1,10 +1,14 @@
 ---
 title: "Making Data Findable"
-minutes: 15
+teaching: 15
+exercises: 0
+questions:
+- "FIXME"
+objectives:
+- "FIXME"
+keypoints:
+- "Make data sets more useful by providing metadata."
 ---
-> ## Learning Objectives {.objectives}
->
-> *   Make data sets more useful by providing metadata.
 
 It's not enough to tell people what the rule is for creating filenames,
 since that doesn't tell them what data sets we've actually generated.
@@ -20,6 +24,7 @@ Here's the format we will use:
 2014-05-27,AUS,CAN,AUS-CAN.csv
 2014-05-28,BRA,CAN,BRA-CAN.csv
 ~~~
+{: .source}
 
 The columns are the date the data set was generated,
 the identifiers of the two countries being compared,
@@ -32,7 +37,7 @@ other people's programs shouldn't have to.
 
 Here's a function that updates the index file every time we generate a new data file:
 
-~~~ {.python}
+~~~
 import time
 
 def update_index(index_filename, left, right):
@@ -56,6 +61,7 @@ def update_index(index_filename, left, right):
         writer = csv.writer(raw)
         writer.writerows(records)
 ~~~
+{: .python}
 
 Let's test it.
 If our index file contains:
@@ -66,12 +72,14 @@ If our index file contains:
 2014-05-27,AUS,CAN,AUS-CAN.csv
 2014-05-28,BRA,CAN,BRA-CAN.csv
 ~~~
+{: .source}
 
 and we run:
 
-~~~ {.python}
+~~~
 update_index('data/index.csv', 'TCD', 'CAN')
 ~~~
+{: .python}
 
 then our index file now contains:
 
@@ -82,6 +90,7 @@ then our index file now contains:
 2014-05-28,BRA,CAN,BRA-CAN.csv
 2014-05-29,TCD,CAN,TCD-CAN.csv
 ~~~
+{: .source}
 
 Now that all of this is in place,
 it's easy for us—and other people—to do new and exciting things with our data.
@@ -89,7 +98,7 @@ For example,
 we can easily write a small program that tells us what data sets include information about a particular country
 *and* have been published since we last checked:
 
-~~~ {.python}
+~~~
 def what_is_available(index_file, country, after):
     '''What data files include a country and have been published since 'after'?'''
     with open(index_file, 'r') as raw:
@@ -102,11 +111,13 @@ def what_is_available(index_file, country, after):
 
 print what_is_available('data/index.csv', 'BRA', '2014-05-27')
 ~~~
-~~~ {.output}
+{: .python}
+~~~
 ['AUS-BRA.csv', 'BRA-CAN.csv']
 ~~~
+{: .output}
 
-> ## New Kinds of Science {.callout}
+> ## New Kinds of Science
 >
 > This may not seem like a breakthrough,
 > but it is actually an example of how the web helps researchers do new kinds of science.
@@ -125,8 +136,9 @@ print what_is_available('data/index.csv', 'BRA', '2014-05-27')
 > It then checks the articles listed in that index against its local record of what has already been seen,
 > then downloads any articles that are new.
 > By automating this process, blogging tools help us focus attention on things that are actually worth looking at.
+{: .callout}
 
-> ## Indexing {.challenge}
+> ## Indexing
 >
 > We should always create an index for generated data because:
 >
@@ -134,19 +146,23 @@ print what_is_available('data/index.csv', 'BRA', '2014-05-27')
 > 2.  The web server will not display the directory without an index.
 > 3.  REST APIs require an index to function.
 > 4.  It is too complicated for a program to calculate itself.
+{: .challenge}
 
-> ## Metadata for Metadata {.challenge}
+> ## Metadata for Metadata
 >
 > Should the first line of the index file be a header giving the names of the columns?
 > Why or why not?
+{: .challenge}
 
-> ## To Automate or Not {.challenge}
+> ## To Automate or Not
 >
 > Should `update_index` be called inside `save_records`
 > so that the index is automatically updated every time a new data set is generated?
 > Why or why not?
+{: .challenge}
 
-> ## Removing Redundant Redundancy {.challenge}
+> ## Removing Redundant Redundancy
 >
 > `update_index` and `save_records` both construct the name of the data file.
 > Refactor them to remove this redundancy.
+{: .challenge}

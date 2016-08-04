@@ -1,10 +1,14 @@
 ---
 title: "Publishing Data"
-minutes: 15
+teaching: 15
+exercises: 0
+questions:
+- "FIXME"
+objectives:
+- "Write Python programs that share static data sets."
+keypoints:
+- "FIXME"
 ---
-> ## Learning Objectives {.objectives}
->
-> *   Write Python programs that share static data sets.
 
 We now have functions to download temperature data for different countries and find annual differences.
 The next step is to share our findings with the world by publishing the data sets we generate.
@@ -17,7 +21,7 @@ To do this, we have to answer three questions:
 The first question is the easiest to answer:
 `diff_records` returns a list of (year, difference) pairs that we can write out as a CSV file:
 
-~~~ {.python}
+~~~
 import csv
 
 def save_records(filename, records):
@@ -26,18 +30,21 @@ def save_records(filename, records):
         writer = csv.writer(raw)
         writer.writerows(records)
 ~~~
+{: .python}
 
-> ## Lessons Learned {.callout}
+> ## Lessons Learned
 >
 > We use the `csv` library to write data
 > for the same reason we use it to read:
 > it correctly handles special cases (such as text containing commas).
+{: .callout}
 
 Let's test it:
 
-~~~ {.python}
+~~~
 save_records('temp.csv', [[1, 2], [3, 4]])
 ~~~
+{: .python}
 
 If we then look in the file `temp.csv`, we find:
 
@@ -45,6 +52,7 @@ If we then look in the file `temp.csv`, we find:
 1,2
 3,4
 ~~~
+{: .source}
 
 as desired.
 
@@ -79,7 +87,7 @@ Someone could, for example, call `save_records('aus+bra.csv', records)`.
 To reduce the odds of this happening,
 let's modify `save_records` to take country identifiers as parameters:
 
-~~~ {.python}
+~~~
 import csv
 
 def save_records(left, right, records):
@@ -89,30 +97,34 @@ def save_records(left, right, records):
         writer = csv.writer(raw)
         writer.writerows(records)
 ~~~
+{: .python}
 
 We can now call it like this:
 
-~~~ {.python}
+~~~
 save_records('AUS', 'BRA', [[1, 2], [3, 4]])
 ~~~
+{: .python}
 
 and then check that the right output file has been created.
 We are bound to have the country codes anyway (having used them to look up our data),
 so this should seem natural to our users.
 
-> ## Deciding What to Check {.challenge}
+> ## Deciding What to Check
 >
 > Should `save_records` check that every record in its input has exactly two fields?
 > Why or why not?
 > What about country codes -
 > should it contain a list of those that match actual countries
 > and check that `left` and `right` are in that list?
+{: .challenge}
 
-> ## Setting Up Locally {.challenge}
+> ## Setting Up Locally
 >
 > Find out how to publish a file on your department's server.
+{: .challenge}
 
-> ## Published Data Consistency {.challenge}
+> ## Published Data Consistency
 >
 > It is important for the file names of published data to be consistent because:
 >
@@ -120,3 +132,4 @@ so this should seem natural to our users.
 > 2.  You may not have access to your department's server to rename them.
 > 3.  The `csv` library requires it.
 > 4.  Programs can only process files and data correctly when they are.
+{: .challenge}

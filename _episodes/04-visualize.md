@@ -1,15 +1,19 @@
 ---
 title: "Visualization"
-minutes: 15
+teaching: 15
+exercises: 0
+questions:
+- "FIXME"
+objectives:
+- "Construct a simple visualization using pyplot."
+keypoints:
+- "FIXME"
 ---
-> ## Learning Objectives {.objectives}
->
-> *   Construct a simple visualization using pyplot.
 
 Long lists of numbers are not particularly useful,
 but we now have the tools we need to visualize the temperature differences between countries:
 
-~~~ {.python}
+~~~
 from matplotlib import pyplot as plt
 
 australia = annual_mean_temp('AUS')
@@ -18,6 +22,7 @@ diff = diff_records(australia, canada)
 plt.plot(diff)
 plt.show()
 ~~~
+{: .python}
 
 ![First Plot](fig/plot-01.png)
 
@@ -26,17 +31,19 @@ pyplot has interpreted the list of pairs returned by `annual_mean_temp`
 as two corresponding curves rather than as the (x,y) coordinates for one curve.
 Let's convert our list of (year, difference) pairs into a NumPy array:
 
-~~~ {.python}
+~~~
 import numpy as np
 d = np.array(diff)
 ~~~
+{: .python}
 
 and then plot the first column against the second:
 
-~~~ {.python}
+~~~
 plt.plot(d[:, 0], d[:, 1])
 plt.show()
 ~~~
+{: .python}
 
 ![Second Plot](fig/plot-02.png)
 
@@ -45,7 +52,8 @@ At this point, if we wanted to do some real science,
 it would be time to use a curve-fitting library
 or calculate some meaningful statistics.
 
-> ## Changing Visualizations {.challenge}
+> ## Changing Visualizations
 >
 > Modify the plotting commands so that the Y-axis scale runs from 0 to 32.
 > Do you think this gives you a more accurate or less accurate view of this data?
+{: .challenge}

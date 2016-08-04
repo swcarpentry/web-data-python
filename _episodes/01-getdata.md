@@ -1,10 +1,14 @@
 ---
 title: "Getting Data"
-minutes: 15
+teaching: 15
+exercises: 0
+questions:
+- "FIXME"
+objectives:
+- "Write Python programs to download data sets using simple REST APIs."
+keypoints:
+- "FIXME"
 ---
-> ## Learning Objectives {.objectives}
->
-> *   Write Python programs to download data sets using simple REST APIs.
 
 A growing number of organizations make data sets available on the web in a style called [REST](reference.html#rest),
 which stands for REpresentational State Transfer.
@@ -41,6 +45,7 @@ For example, if we want the average annual temperature in Canada as a CSV file, 
 ~~~
 http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv
 ~~~
+{: .source}
 
 If we paste that URL into a browser, it displays:
 
@@ -54,8 +59,9 @@ year,data
 2008,-7.2008957862854
 2009,-6.997011661529541
 ~~~
+{: .source}
 
-> ## Behind the Scenes {.callout}
+> ## Behind the Scenes
 >
 > This particular data set might be stored in a file on the World Bank's server,
 > or that server might:
@@ -70,6 +76,7 @@ year,data
 > As long as the World Bank doesn't change its URLs,
 > we don't need to know which method it's using
 > and it can switch back and forth between them without breaking our programs.
+{: .callout}
 
 If we only wanted to look at data for a couple of countries,
 we could just download those files one by one.
@@ -81,39 +88,43 @@ It is clumsy to use, though, so many people (including us) prefer
 a newer library called [Requests](http://docs.python-requests.org).
 To install it, run the command:
 
-~~~ {.bash}
+~~~
 $ pip install requests
 ~~~
+{: .bash}
 
-> ## Installing with Pip {.callout}
+> ## Installing with Pip
 >
 > Note that `pip` is a program in its own right,
 > so the command above must be run in the shell,
 > and *not* from within Python itself.
+{: .callout}
 
 If Requests is not already installed,
 `pip`'s output is:
 
-~~~ {.output}
+~~~
 Downloading/unpacking requests
   Downloading requests-2.7.0-py2.py3-none-any.whl (470kB): 470kB downloaded
 Installing collected packages: requests
 Successfully installed requests
 Cleaning up...
 ~~~
+{: .output}
 
 If it's already present,
 the output will be:
 
-~~~ {.output}
+~~~
 Requirement already satisfied (use --upgrade to upgrade): requests in /Users/swc/anaconda/lib/python2.7/site-packages
 Cleaning up...
 ~~~
+{: .output}
 
 Either way,
 we can now get the data we want like this:
 
-~~~ {.python}
+~~~
 import requests
 url = 'http://climatedataapi.worldbank.org/climateweb/rest/v1/country/cru/tas/year/CAN.csv'
 response = requests.get(url)
@@ -123,7 +134,8 @@ else:
     print('First 100 characters of data are')
     print(response.text[:100])
 ~~~
-~~~ {.output}
+{: .python}
+~~~
 First 100 characters of data are
 year,data
 1901,-7.67241907119751
@@ -131,6 +143,7 @@ year,data
 1903,-7.910782814025879
 1904,-8.15572929382
 ~~~
+{: .output}
 
 The first line imports the `requests` library.
 The second defines the URL for the data we want;
@@ -163,27 +176,31 @@ the most common are:
 if we get anything else, the response probably doesn't contain actual data
 (though it might contain an error message).
 
-> ## Some People Don't Follow the Rules {.callout}
+> ## Some People Don't Follow the Rules
 >
 > Unfortunately, some sites don't return a meaningful status code.
 > Instead, they return 200 for *everything*,
 > then put an error message (if appropriate) in the text of the response.
 > This works when the result is being displayed to a human being,
 > but fails miserably when the "reader" is a program that can't actually read.
+{: .callout}
 
-> ## Defining REST API {.challenge}
+> ## Defining REST API
 >
 > A REST API is:
 > 1.  A data format.
 > 2.  A way of accessing data via an URL.
 > 3.  Less work for the server.
 > 4.  Only accessable via Python libraries like Requests.
+{: .challenge}
 
-> ## Get Data for Guatemala {.challenge}
+> ## Get Data for Guatemala
 > 
 > Modify the little program above to fetch temperatures for Guatemala.
+{: .challenge}
 
-> ## How Hot is Afghanistan? {.challenge}
+> ## How Hot is Afghanistan?
 > 
 > Read the [documentation](http://data.worldbank.org/developers/climate-data-api) for the Climate Data API,
 > and then write URLs to find the annual average temperature for Afghanistan between 1980 and 1999.
+{: .challenge}
