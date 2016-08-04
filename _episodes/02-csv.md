@@ -1,7 +1,5 @@
 ---
-layout: page
-title: Working With Data on the Web
-subtitle: Handling CSV Data
+title: "Handling CSV Data"
 minutes: 15
 ---
 > ## Learning Objectives {.objectives}

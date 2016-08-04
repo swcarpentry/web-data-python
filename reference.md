@@ -1,32 +1,31 @@
 ---
-layout: page
-title: Working With Data on the Web
-subtitle: Reference
+layout: reference
+permalink: /reference/
 ---
-## [Getting Data](01-getdata.html)
+## [Getting Data]({{ site.github.url }}/01-getdata.html)
 
 *   Many sites make data available for download via URLs that are formatted in specific ways.
 *   Use the `requests` library to download data in Python programs.
 
-## [Handling CSV Data](02-csv.html)
+## [Handling CSV Data]({{ site.github.url }}/02-csv.html)
 
 *   Use the `csv` library to read comma-separated values.
 
-## [Generalizing and Handling Errors](03-generalize.html)
+## [Generalizing and Handling Errors]({{ site.github.url }}/03-generalize.html)
 
 *   Write tests.
 *   Don't fail silently.
 
-## [Visualization](04-visualize.html)
+## [Visualization]({{ site.github.url }}/04-visualize.html)
 
 *   Use the `pyplot` library from `matplotlib` for simple visualizations.
 *   Viewing data is often the first step toward understanding it.
 
-## [Publishing Data](05-makedata.html)
+## [Publishing Data]({{ site.github.url }}/05-makedata.html)
 
 *   Publish data by putting files with predictable names in a publicly-accessible location.
 
-## [Making Data Findable](06-findable.html)
+## [Making Data Findable]({{ site.github.url }}/06-findable.html)
 
 *   Create a machine-readable index to explicitly tell people what data sets are available.
 

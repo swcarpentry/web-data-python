@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Working With Data on the Web
-subtitle: Discussion
+title: "Discussion"
+permalink: /discuss/
 ---
 Interactive web applications have transformed science
 (and the rest of society),

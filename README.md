@@ -1,5 +1,5 @@
-web-data
-========
+web-data-python
+===============
 
 Introduction to getting and publishing data over the web for Python programmers.
 

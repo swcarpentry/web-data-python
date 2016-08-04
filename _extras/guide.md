@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Working With Data on the Web
-subtitle: Instructor's Guide
+title: "Instructors' Guide"
+permalink: /guide/
 ---
 Getting data from the web is not the hardest part of this lesson
 (in part because libraries like Requests make it so simple).

@@ -1,7 +1,5 @@
 ---
-layout: page
-title: Working With Data on the Web
-subtitle: Making Data Findable
+title: "Making Data Findable"
 minutes: 15
 ---
 > ## Learning Objectives {.objectives}

@@ -1,7 +1,5 @@
 ---
-layout: page
-title: Working With Data on the Web
-subtitle: Generalizing and Handling Errors
+title: "Generalizing and Handling Errors"
 minutes: 15
 ---
 > ## Learning Objectives {.objectives}

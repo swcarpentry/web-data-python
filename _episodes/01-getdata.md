@@ -1,7 +1,5 @@
 ---
-layout: page
-title: Working With Data on the Web
-subtitle: Getting Data
+title: "Getting Data"
 minutes: 15
 ---
 > ## Learning Objectives {.objectives}

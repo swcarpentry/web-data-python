@@ -1,7 +1,5 @@
 ---
-layout: page
-title: Working With Data on the Web
-subtitle: Visualization
+title: "Visualization"
 minutes: 15
 ---
 > ## Learning Objectives {.objectives}
