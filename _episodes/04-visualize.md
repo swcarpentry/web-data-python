@@ -24,7 +24,7 @@ plt.show()
 ~~~
 {: .python}
 
-![First Plot](fig/plot-01.png)
+![First Plot]({{ site.github.url }}/fig/plot-01.png)
 
 That's not what we want:
 pyplot has interpreted the list of pairs returned by `annual_mean_temp`
@@ -45,7 +45,7 @@ plt.show()
 ~~~
 {: .python}
 
-![Second Plot](fig/plot-02.png)
+![Second Plot]({{ site.github.url }}/fig/plot-02.png)
 
 It looks like the difference is slowly decreasing, but the signal is very noisy.
 At this point, if we wanted to do some real science,

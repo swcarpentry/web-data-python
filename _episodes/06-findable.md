@@ -14,7 +14,7 @@ It's not enough to tell people what the rule is for creating filenames,
 since that doesn't tell them what data sets we've actually generated.
 The final step in this lesson is therefoore
 to make the data we generate findable
-by creating an [index](reference.html#index) to tell people what files exist.
+by creating an [index]({{ site.github.url }}/reference/#index) to tell people what files exist.
 
 Here's the format we will use:
 

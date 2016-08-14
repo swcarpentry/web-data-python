@@ -67,7 +67,7 @@ with open('test01.csv', 'r') as reader:
 
 The dates are correct,
 but the values all end with `\n`.
-This is an [escape sequence](reference.html#escape-sequence) that represents
+This is an [escape sequence]({{ site.github.url }}/reference/#escape-sequence) that represents
 the newline character at the end of each line.
 To get rid of it,
 we should strip leading and trailing whitespace from each line before splitting it on commas:
@@ -110,7 +110,7 @@ with open('test01.csv', 'r') as raw:
 
 Here,
 `raw` reads data in the normal way,
-while `cooked` is a [wrapper](reference.html#wrapper)
+while `cooked` is a [wrapper]({{ site.github.url }}/reference#wrapper)
 that takes a line of text and turns it into a list of fields.
 
 We can equally well give a `csv.reader` a list of strings rather than a file:

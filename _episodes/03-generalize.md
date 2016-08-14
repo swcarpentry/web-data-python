@@ -233,7 +233,7 @@ while the third crashes because we're using `left` to determine the number of re
 but `right` doesn't have that many.
 
 The first two problems are actually worse than the third
-because they are [silent failures](reference.html#silent-failure):
+because they are [silent failures]({{ site.github.url }}/reference/#silent-failure):
 the function does the wrong thing, but doesn't indicate that in any way.
 Let's fix that:
 
